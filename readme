@@ -1,0 +1,18 @@
+Installation du projet:
+1. Installer un serveur web (xampp, wamp..) avec une version php 7.x
+2. Installer composer
+3. creer un dossier n'importe ou pour y cloner le projet
+4. ouvrir l'invite de commande et taper les commandes suivantes :
+    cd "route vers le dossier que vous avez créez"
+    git clone https://github.com/ouassimabbari/Projet-symfony
+    cd Projet-symfony
+    composer install
+5. ouvrir le projet dans l'ide
+6. se rendre sur le fichier .env et modifier la ligne suivante qui est tout en bas du fichier
+    DATABASE_URL=mysql://root:@127.0.0.1:3309/symbbnb?serverVersion=5.7
+    remplacer par : DATABASE_URL=mysql://[username mysql]:[password mysql]@127.0.0.1:[port mysql]/[nom de la base de donnée a créer]?serverVersion=5.7
+7. Tapez les commandes suivantes soit dans le terminal de l'ide soit dans l'invite de commante aprés s'être situé dans le chemin qui raméne vers Projet-symfony :
+    php bin/console doctrine:database:create
+    php bin/console doctrine:migrations:migrate
+    php bin/console doctrine:fixtures:load
+8. tapez la commande : php bin/console server:run et se rendre vers 127.0.0.1:8000
