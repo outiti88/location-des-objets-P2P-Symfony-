@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+  Accueil
+{% endblock %}
+{% block body %}
+<div class="container">
+  <div class="jumbotron mt-3">
+    <h1 class="display-3">Bienvenue sur SymBNB</h1>
+    <p class="lead">Louer ce qui vous plait, n'a jamais été si facile </p>
+    <hr class="my-4">
+    <p>Voulez vous louer un objet ? Nous en avons plein a vous montrer. </p>
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="{{ path('homepage') }}" role="button">Voir nos annonces</a>
+    </p>
+  </div>
+
+  <h2>Nos articles stars</h2>
+  <div class="row mt-5">
+    {% for data in ads %}
+      {% include 'ad/_ad.html.twig' with {'ad': data.annonce} %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

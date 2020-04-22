@@ -1,0 +1,47 @@
+#ad-title {
+    padding: 2em;
+    height: 300px;
+    background-size: cover;
+    background-position: center, center;
+}
+
+#ad-title-container h1,
+#ad-title-container p {
+    padding: 0.3em;
+    color: white;
+    text-shadow: 3px, 3px, 3px rgb(0, 0, 0, 1.5);
+}
+
+#body {
+    margin-top: 20px;
+}
+
+.avatar {
+    max-width: 128px;
+    max-height: 128px;
+    border-radius: 50%;
+}
+
+.avatar-medium {
+    max-width: 64px;
+    max-height: 64px;
+}
+
+.avatar-mini {
+    max-width: 24px;
+    max-height: 24px;
+}
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+    color: firebrick !important;
+}
+
+span.rating i {
+    color: goldenrod;
+}
+
+.avatar-micro {
+    max-width: 24px;
+    max-height: 24px;
+}

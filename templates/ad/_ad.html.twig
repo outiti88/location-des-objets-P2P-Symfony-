@@ -1,0 +1,26 @@
+{% set url = path('ads_show', {'slug' : ad.slug}) %}
+<div class="col-md-4">
+    <div class="card bg-light md-3">
+        <div class="card-header text-center">
+            <strong>{{ ad.price }}Dhs / jour</strong> <br>
+            {% if ad.comments|length > 0 %}
+            {% include 'partials/rating.html.twig' with {'rating': ad.avgRatings } %}
+            {% else %}
+            <small>Pas encore noté</small>
+            {% endif %}
+        </div>
+        <a href="{{ url }}">
+            <img src="{{ ad.coverImage }}" alt="image de l'objet" style="height: 200px; width: 100%; display: block">
+        </a>
+        <div class="card-body">
+            <a href="{{ url }}">
+                <h4 class="card-title">{{ ad.title }}</h4>
+            </a>
+            <p class="card-text"> {{ ad.introduction }} </p>
+            <a href="{{ url }}" class="btn btn-secondary">En savoir plus</a>
+            {% if app.user and app.user == ad.author %}
+                <a href="{{ path('ads_edit', {'slug': ad.slug }) }}" class="btn btn-secondary">Modifier l'annonce</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
