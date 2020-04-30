@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Ad;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,7 +20,11 @@ class AdRepository extends ServiceEntityRepository
         parent::__construct($registry, Ad::class);
     }
 
-    public function findBestAds($limit)
+    /**
+     * @return Query 
+     */
+
+    public function findBestAds($limit) : Query
     {
         return $this->createQueryBuilder('a')
             ->select('a as annonce, AVG(c.rating) as avgRatings')
@@ -27,8 +32,7 @@ class AdRepository extends ServiceEntityRepository
             ->groupBy('a')
             ->orderBy('avgRatings', 'DESC')
             ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 
     // /**

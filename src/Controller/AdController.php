@@ -12,9 +12,11 @@ use App\Repository\AdRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SubCategoryRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,13 +26,18 @@ class AdController extends AbstractController
     /**
      * @Route("/ads", name="ads_index")
      */
-    public function index(Request $request, AdRepository $repo, EntityManagerInterface $manager)
+    public function index(PaginatorInterface $paginator ,Request $request, AdRepository $repo, EntityManagerInterface $manager)
     {
         $filter = new Filter;
 
         $form = $this->createForm(FilterType::class, $filter);
-        $ads = $repo->findAll();
+        $ads = $paginator->paginate(
+            $repo->findAll(),
+            $request->query->getInt('page', 1),
+            9 //nombre d'annoces
+        );
 
+    
         return $this->render('ad/index.html.twig', [
             'ads' => $ads,
             'form' => $form->createView()
