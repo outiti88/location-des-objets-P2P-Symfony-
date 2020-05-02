@@ -91,6 +91,18 @@ class FilterType extends ApplicationType
     {
         $resolver->setDefaults([
             'data_class' => Filter::class,
+            'method' => 'get',
+            'csrf_protection' => false
         ]);
+
     }
+
+
+    public function getBlockPrefix()
+    {
+        return '';
+    }
+
+
+
 }

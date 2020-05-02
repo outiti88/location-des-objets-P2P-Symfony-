@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\City;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,7 +16,7 @@ class Filter
     private $id;
 
     /**
-     * 
+     * @var City
      */
     private $city;
 
@@ -57,12 +58,12 @@ class Filter
         return $this->id;
     }
 
-    public function getCity(): ?string
+    public function getCity(): ?City
     {
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(City $city): self
     {
         $this->city = $city;
 

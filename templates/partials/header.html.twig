@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="{{ path('homepage') }}">Navbar</a>
+            <a class="navbar-brand" href="{{ path('homepage') }}">Location des Objets</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -9,8 +9,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('homepage') }}">Accueil <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('ads_index') }}">Annonces <span class="sr-only">(current)</span></a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Annonces</a>
+                        <div class="dropdown-menu" style="">
+                        <a class="dropdown-item" href="{{ path('ads_index') }}">Voir Annonces <span class="sr-only">(current)</span></a>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{path('ads_create')}}">Creer une annonce <span class="sr-only">(current)</span></a>
+                        </div>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">

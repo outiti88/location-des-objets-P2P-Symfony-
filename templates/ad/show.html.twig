@@ -4,20 +4,56 @@
     {{ ad.title }}
 {% endblock %}
 
+{% block stylesheets %}
+    <style>
+
+        .bg-image {
+        /* The image used */
+        background-image: url("photographer.jpg");
+        
+        /* Add the blur effect */
+        filter: blur(8px);
+        -webkit-filter: blur(8px);
+        
+        /* Full height */
+        height: 100%; 
+        
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        }
+
+        /* Position text in the middle of the page/image */
+        .bg-text {
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+        color: white;
+        font-weight: bold;
+        border: 3px solid #f1f1f1;
+
+        text-align: center;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     
-    <div class="container-fluid" id="ad-title-container" style = "background-image: url({{ ad.coverImage }})">
-         <div class="container">
+    <div class="container-fluid " id="ad-title-container" style = "background-image: url({{ ad.coverImage }})">
+        <div class="bg-image"></div>
+         <div class="container bg-text">
             <h1>{{ ad.title }}</h1>
             <p id = "ad-introduction">{{ ad.introduction }}</p>
             <p class="h2">
                 <strong>{{ ad.price }} Dhs</strong> par jour
             </p>
-            <a href="{{ path('booking_create', {'slug' : ad.slug }) }}" class="btn btn-primary"> Réserver</a>
+            
             {% if app.user and app.user == ad.author %}
                 <a href="{{ path('ads_edit', {'slug': ad.slug }) }}" class="btn btn-secondary">Modifier l'annonce</a>
                 <a href="{{ path('ads_delete', {'slug': ad.slug }) }}" class="btn btn-danger"
                 onclick="return confirm(`Êtes-vous sûr de vouloir supprimer l'annonce : {{ ad.title }} ?`)">Supprimer l'annonce</a>
+            {% else %}
+                <a href="{{ path('booking_create', {'slug' : ad.slug }) }}" class="btn btn-primary"> Réserver</a>
             {% endif %}
         </div>
     </div>

@@ -3,9 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Ad;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Filter;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Ad|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,10 +22,10 @@ class AdRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Query 
+     * @return Ad[] Returns an array of Ad objects
      */
 
-    public function findBestAds($limit) : Query
+    public function findBestAds($limit) 
     {
         return $this->createQueryBuilder('a')
             ->select('a as annonce, AVG(c.rating) as avgRatings')
@@ -32,8 +33,66 @@ class AdRepository extends ServiceEntityRepository
             ->groupBy('a')
             ->orderBy('avgRatings', 'DESC')
             ->setMaxResults($limit)
-            ->getQuery();
+            ->getQuery()
+            ->getResult()
+            ;
     }
+
+
+
+
+
+
+    /**
+     * @return Ad[] Returns an array of Ad objects
+    */
+
+
+    public function findFilter(Filter $filter)
+    {
+        $bol = 0;
+        
+
+        if($filter->getEndPrice() || $filter->getStartPrice() || $filter->getCity()){
+            dump($filter->getCity());
+            $query= $this
+                    ->createQueryBuilder('a');
+            $bol=1;
+            if($filter->getEndPrice()){
+            $query= $query
+                    ->andWhere('a.price <= :endPrice')
+                    -> setParameter('endPrice',$filter->getEndPrice());
+            }
+
+            if($filter->getStartPrice()){
+                $query= $query
+                        ->andWhere('a.price >= :startPrice')
+                        -> setParameter('startPrice',$filter->getStartPrice());
+                }
+
+            if($filter->getCity()){
+                
+                $query= $query
+                        ->select('a as annonce , c as city')
+                         ->join('a.city', 'c')
+                        ->andWhere('a.city >= :city')
+                        -> setParameter('city',$filter->getCity());
+                }
+
+            $query= $query->getQuery();    
+        }
+        
+
+       
+        
+        if($bol)  return $query->getResult();
+
+         return $this->findAll();
+    }
+
+
+
+
 
     // /**
     //  * @return Ad[] Returns an array of Ad objects

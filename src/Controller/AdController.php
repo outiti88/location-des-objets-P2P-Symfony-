@@ -25,16 +25,20 @@ class AdController extends AbstractController
 {
     /**
      * @Route("/ads", name="ads_index")
+     * @return Response
      */
-    public function index(PaginatorInterface $paginator ,Request $request, AdRepository $repo, EntityManagerInterface $manager)
+    public function index(PaginatorInterface $paginator ,Request $request, AdRepository $repo, EntityManagerInterface $manager):Response
     {
-        $filter = new Filter;
+        $filter = new Filter();
 
         $form = $this->createForm(FilterType::class, $filter);
+        $form->handleRequest($request);
+        //dump($filter);
+
         $ads = $paginator->paginate(
-            $repo->findAll(),
+            $repo->findFilter($filter),
             $request->query->getInt('page', 1),
-            9 //nombre d'annoces
+            6 //nombre d'annoces
         );
 
     
