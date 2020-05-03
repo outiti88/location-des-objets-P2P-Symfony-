@@ -54,7 +54,7 @@ class AdRepository extends ServiceEntityRepository
         
 
         if($filter->getEndPrice() || $filter->getStartPrice() || $filter->getCity()){
-            dump($filter->getCity());
+            //dump($filter->getCity());
             $query= $this
                     ->createQueryBuilder('a');
             $bol=1;

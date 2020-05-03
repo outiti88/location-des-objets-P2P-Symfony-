@@ -33,7 +33,7 @@ class AdController extends AbstractController
 
         $form = $this->createForm(FilterType::class, $filter);
         $form->handleRequest($request);
-        //dump($filter);
+        //dump($request);
 
         $ads = $paginator->paginate(
             $repo->findFilter($filter),
