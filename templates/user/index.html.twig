@@ -3,7 +3,17 @@
 {% block title %}Page de {{ user.fullName }}{% endblock %}
 
 {% block body %}
-
+    <div class="bradcam_area breadcam_bg_2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Profil de {{ user.fullName }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container mt-5">
         <div class="row align-items-center">
             <div class="col-3 text-center">
@@ -21,7 +31,15 @@
                 {% endif %}
             </div>
         </div>
-        {{ user.description | raw }}
+        <section class="sample-text-area">
+            <div class="container box_1170">
+            <h3 class="text-heading">Presentation : </h3>
+            <p class="sample-text">{{ user.description | raw }} </p>
+                
+            </div>
+        </section>
+        
+        
 
         <hr>
         {% if user is same as(app.user) %}

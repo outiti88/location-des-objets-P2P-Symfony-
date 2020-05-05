@@ -3,14 +3,25 @@
 {% block title %}Modification du profil utilisateur{% endblock %}
 
 {% block body %}
-
-    <div class="container">
+    <div class="bradcam_area breadcam_bg_2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Modification du profil</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>   
+    <div class="container" style="padding-top:50px;">
         <h1>Modification du profil</h1>
 
         {{ form_start(form) }}
         {{ form_widget(form) }}
 
-        <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
+        <button type="submit" class="btn genric-btn danger e-large">Enregistrer les modifications</button>
 
         {{ form_end(form) }}
     </div>

@@ -7,9 +7,20 @@
 {% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1 class="my-3"> Voici les annonces de nos propriétaires </h1>
-        <button class="btn btn-primary mb-3" id="trigger-filter-form">Filtrer <i class="fas fa-angle-down"></i></button>
+
+    <div class="bradcam_area breadcam_bg_2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Voici les annonces de nos propriétaires</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="container" style="padding-top:20px">
+        <button  style="margin-bottom:20px" class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn" id="trigger-filter-form">Filtrer <i class="fas fa-angle-down"></i></button>
         <div class="alert alert-light" id="filter-form" style="display: none;">
         {{ form_start(form) }}
             <div class="row">
@@ -42,7 +53,7 @@
             <div class="row">
                 <div class="col-md-10"></div>
                 <div class="col py-3 px-3">
-                    <button type="submit" class="btn btn-secondary">Chercher</button>
+                    <button type="submit" class="genric-btn danger"">Chercher</button>
                 </div>
             </div>
         {{ form_end(form) }}
@@ -52,9 +63,10 @@
             {% include 'ad/_ad.html.twig' %}
         {% endfor %}
     </div>
-    <div class="navigation">
+<nav class="blog-pagination justify-content-center d-flex">
+
     {{ knp_pagination_render(ads) }}
-    </div>
+    </nav>
 </div>
 {% endblock %}
 

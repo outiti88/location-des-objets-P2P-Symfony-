@@ -3,14 +3,27 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-
+    <div class="bradcam_area breadcam_bg_2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Inscription</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>  
 <div class="container">
 
     <h1>Inscrivez vous sur notre site</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button type="submit" class="btn btn-success">Confirmer l'inscription</button>
+    <button type="submit" class="genric-btn primary">Confirmer l'inscription</button>
+    <button type="reset" class="genric-btn info ">Effacer tous</button>
+
     {{ form_end(form) }}
 
 </div>

@@ -5,15 +5,25 @@
 {% form_theme form 'ad/_collection.html.twig' %}
 
 {% block body %}
-
+        <div class="bradcam_area breadcam_bg_2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Créer une nouvelle annonce</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container" style="padding:20px 0">
-        <h1>Créer une nouvelle annonce</h1>
+        <h1 style="color:#f44a40; text-align:center">Créer une nouvelle annonce</h1>
 
         {{ form_start(form) }}
 
         {{ form_widget(form) }}
 
-        <button type="submit "class="btn btn-primary">Créer la nouvelle annonce</button>
+        <button type="submit "class="genric-btn danger-border radius">Créer la nouvelle annonce</button>
 
         {{ form_end(form) }}
     </div>

@@ -3,22 +3,28 @@
   Accueil
 {% endblock %}
 {% block body %}
-<div class="container">
-  <div class="jumbotron mt-3">
-    <h1 class="display-3">Bienvenue sur SymBNB</h1>
-    <p class="lead">Louer ce qui vous plait, n'a jamais été si facile </p>
-    <hr class="my-4">
-    <p>Voulez vous louer un objet ? Nous en avons plein a vous montrer. </p>
-    <p class="lead">
-      <a class="btn btn-primary btn-lg" href="{{ path('homepage') }}" role="button">Voir nos annonces</a>
-    </p>
-  </div>
+        <div class="slider_area">
+        <div class="single_slider  d-flex align-items-center slider_bg_1 overlay2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="slider_text text-center ">
+                            <h3>Location des Objets </h3>
+                            <h4 style="color:white;">Partout au MAROC </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <h2>Nos articles stars</h2>
-  <div class="row mt-5">
-    {% for data in ads %}
-      {% include 'ad/_ad.html.twig' with {'ad': data.annonce} %}
-    {% endfor %}
+<div style="padding:20px;">
+    <h2 style="text-align:center">Nos articles stars</h2>
+    <div class="row mt-5">
+      {% for data in ads %}
+        {% include 'ad/_ad.html.twig' with {'ad': data.annonce} %}
+      {% endfor %}
+    </div>
   </div>
 </div>
 {% endblock %}
