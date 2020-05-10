@@ -1,11 +1,11 @@
 security:
   encoders:
     App\Entity\User:
-      algorithm: bcrypt
+      algorithm: auto
   # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
   providers:
-    users_in_memory: { memory: null }
-    in_database:
+    # used to reload user from session & other features (e.g. switch_user)
+    app_user_provider:
       entity:
         class: App\Entity\User
         property: email
@@ -16,16 +16,17 @@ security:
     admin:
       pattern: ^/admin
       anonymous: true
-      provider: in_database
+      provider: app_user_provider
       form_login:
         login_path: admin_account_login
         check_path: admin_account_login
+        default_target_path: admin_ads_index
       logout:
         path: admin_account_logout
         target: homepage
     main:
       anonymous: lazy
-      provider: in_database
+      provider: app_user_provider
 
       form_login:
         login_path: account_login

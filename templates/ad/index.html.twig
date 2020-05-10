@@ -53,7 +53,7 @@
             <div class="row">
                 <div class="col-md-10"></div>
                 <div class="col py-3 px-3">
-                    <button type="submit" class="genric-btn danger"">Chercher</button>
+                    <button type="submit" class="genric-btn danger">Chercher</button>
                 </div>
             </div>
         {{ form_end(form) }}
@@ -79,24 +79,24 @@
             format: 'dd/mm/yyyy',
             startDate: new Date()
         });
-        $('#filter_category').prepend($("<option></option>").attr("value", 0).text("Toutes les categories"));
-        $('#filter_category option[value="0"]').prop('selected', true);
-        $("#filter_subCategory option").remove();
-        $("#filter_category").on('change', function () {
-            var cat = $("#filter_category option:selected").text();
+        $('#category').prepend($("<option></option>").attr("value", 0).text("Toutes les categories"));
+        $('#category option[value="0"]').prop('selected', true);
+        $("#subCategory option").remove();
+        $("#category").on('change', function () {
+            var cat = $("#category option:selected").text();
             const url = "/ads/subCategory";
             if(cat === "Toutes les categories")
             {
-                $("#filter_subCategory option").remove();
+                $("#subCategory option").remove();
             }else{
                     axios.post(url, {
                     category: cat
                 })
                 .then(function (response) {
-                    $("#filter_subCategory option").remove();
-                    $('#filter_subCategory').append($("<option></option>").attr("value", 0).text("Preciser :"));
+                    $("#subCategory option").remove();
+                    $('#subCategory').append($("<option></option>").attr("value", 0).text("Preciser :"));
                     $.each(response.data, function (key, value) {
-                        $('#filter_subCategory').append($("<option></option>").attr("value", value.id).text(value.title));
+                        $('#subCategory').append($("<option></option>").attr("value", value.id).text(value.title));
                     });
                 }).catch(function (error) {
                     console.log(error);

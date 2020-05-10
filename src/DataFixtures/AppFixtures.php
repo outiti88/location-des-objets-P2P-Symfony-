@@ -30,19 +30,15 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('FR-fr');
 
-        $adminRole = new Role;
-        $adminRole->setTitle('ROLE_ADMIN');
-        $manager->persist($adminRole);
-
         $adminUser = new User;
         $adminUser->setFirstName('Wassim')
             ->setLastName('Abbari')
             ->setEmail('admin@symfony.com')
-            ->setHash($this->encoder->encodePassword($adminUser, 'password'))
+            ->setPassword($this->encoder->encodePassword($adminUser, 'password'))
             ->setPicture("https://avatars.io/twitter/LioorC")
             ->setIntroduction($faker->sentence())
             ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>')
-            ->addUserRole($adminRole);
+            ->setRoles(["ROLE_ADMIN"]);
         $manager->persist($adminUser);
 
         //Nous gérons les utilisateurs
@@ -66,7 +62,7 @@ class AppFixtures extends Fixture
                 ->setEmail($faker->email)
                 ->setIntroduction($faker->sentence())
                 ->setDescription('<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>')
-                ->setHash($hash)
+                ->setPassword($hash)
                 ->setPicture($picture);
 
             $manager->persist($user);

@@ -7,7 +7,7 @@
                             <div class="col-xl-3 col-lg-2">
                                 <div class="logo">
                                     <a href="{{ path('homepage') }}" style="color:white;">
-                                        Location des Objtes
+                                        Location des Objets
                                     </a>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
 
         {% for label, messages in app.flashes %}
 
-            <div class="container">
+            <div class="container mt-5">
                 <div class="alert alert-{{ label }} text-center">
                     {% for message in messages %}
                         <p> {{ message | raw }} </p>

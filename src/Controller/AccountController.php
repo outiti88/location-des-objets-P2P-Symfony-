@@ -65,8 +65,8 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hash = $encoder->encodePassword($user, $user->getHash());
-            $user->setHash($hash);
+            $hash = $encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($hash);
             $manager->persist($user);
             $manager->flush();
 
@@ -135,13 +135,13 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!password_verify($passwordUpdate->getOldPassword(), $user->getHash())) {
+            if (!password_verify($passwordUpdate->getOldPassword(), $user->getPassword())) {
                 $form->get('oldPassword')->addError(new FormError("le mot de passe que vous avez tapé est incorrect"));
             } else {
                 $newPassword = $passwordUpdate->getNewPassword();
                 $hash = $encoder->encodePassword($user, $newPassword);
 
-                $user->setHash($hash);
+                $user->setPassword($hash);
                 $manager->persist($user);
                 $manager->flush();
 

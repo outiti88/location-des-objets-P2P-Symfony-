@@ -4,12 +4,13 @@ namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
@@ -32,7 +33,7 @@ class User implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
@@ -42,7 +43,13 @@ class User implements UserInterface
     private $picture;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
     private $hash;
 
@@ -66,10 +73,6 @@ class User implements UserInterface
      */
     private $ads;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="users")
-     */
-    private $userRoles;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="booker")
@@ -80,6 +83,7 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author", orphanRemoval=true)
      */
     private $comments;
+
 
     function getFullName()
     {
@@ -103,7 +107,6 @@ class User implements UserInterface
     public function __construct()
     {
         $this->ads = new ArrayCollection();
-        $this->userRoles = new ArrayCollection();
         $this->bookings = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
@@ -161,18 +164,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getHash(): ?string
-    {
-        return $this->hash;
-    }
-
-    public function setHash(string $hash): self
-    {
-        $this->hash = $hash;
-
-        return $this;
-    }
-
     public function getIntroduction(): ?string
     {
         return $this->introduction;
@@ -210,6 +201,67 @@ class User implements UserInterface
     }
 
     /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->hash;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->hash = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    /**
      * @return Collection|Ad[]
      */
     public function getAds(): Collection
@@ -235,62 +287,6 @@ class User implements UserInterface
             if ($ad->getAuthor() === $this) {
                 $ad->setAuthor(null);
             }
-        }
-
-        return $this;
-    }
-
-    function getRoles()
-    {
-        $roles = $this->userRoles->map(function ($role) {
-            return $role->getTitle();
-        })->toArray();
-
-        $roles[] = 'ROLE_USER';
-        return $roles;
-    }
-
-    function getPassword()
-    {
-        return $this->hash;
-    }
-
-    function getSalt()
-    {
-    }
-
-    function getUsername()
-    {
-        return $this->email;
-    }
-
-    function eraseCredentials()
-    {
-    }
-
-    /**
-     * @return Collection|Role[]
-     */
-    public function getUserRoles(): Collection
-    {
-        return $this->userRoles;
-    }
-
-    public function addUserRole(Role $userRole): self
-    {
-        if (!$this->userRoles->contains($userRole)) {
-            $this->userRoles[] = $userRole;
-            $userRole->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserRole(Role $userRole): self
-    {
-        if ($this->userRoles->contains($userRole)) {
-            $this->userRoles->removeElement($userRole);
-            $userRole->removeUser($this);
         }
 
         return $this;
