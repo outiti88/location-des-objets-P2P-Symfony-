@@ -134,18 +134,20 @@
             </div>
             {% for comment in ad.comments %}
 
-            <div class="class="comment-list"">
+            <div class="class=" comment-list"" style="padding-bottom:20px">
                 <div class="single-comment justify-content-between d-flex">
                     <div class="user justify-content-between d-flex">
-                        <div class="thumb" style="padding-right:10px"> <img class="avatar avatar-medium" src="{{comment.author.picture}}" alt=""> </div>
+                        <div class="thumb" style="padding-right:10px"> <a href="{{path('user_show', {'slug': comment.author.slug})}}"> 
+                            <img class="avatar avatar-medium" src="{{comment.author.picture}}" alt="">
+                         </a>  </div>
                         <div class="desc">
+                             <h5>
+                                <a href="{{path('user_show', {'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
+                            </h5>
                             <p class="comment"> {{ comment.content }} </p>
                              <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
-                                    <h5>
-                                       <a href="#">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
-                                    </h5>
-                                    <p class="date"><strong> a donné la note de </strong>
+                                    <p class="date"><strong>la note de </strong>
                                      {% include 'partials/rating.html.twig' with {'rating': comment.rating } %}</p>
                                  </div>
 

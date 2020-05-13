@@ -51,7 +51,7 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $hash;
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -234,12 +234,12 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->hash;
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
     {
-        $this->hash = $password;
+        $this->password = $password;
 
         return $this;
     }
