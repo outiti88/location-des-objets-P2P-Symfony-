@@ -25,7 +25,7 @@ class AdRepository extends ServiceEntityRepository
      * @return Ad[] Returns an array of Ad objects
      */
 
-    public function findBestAds($limit) 
+    public function findBestAds($limit)
     {
         return $this->createQueryBuilder('a')
             ->select('a as annonce, AVG(c.rating) as avgRatings')
@@ -34,8 +34,7 @@ class AdRepository extends ServiceEntityRepository
             ->orderBy('avgRatings', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
 
@@ -45,49 +44,55 @@ class AdRepository extends ServiceEntityRepository
 
     /**
      * @return Ad[] Returns an array of Ad objects
-    */
+     */
 
 
     public function findFilter(Filter $filter)
     {
         $bol = 0;
-        
 
-        if($filter->getEndPrice() || $filter->getStartPrice() || $filter->getCity()){
-            //dump($filter->getCity());
-            $query= $this
-                    ->createQueryBuilder('a');
-            $bol=1;
-            if($filter->getEndPrice()){
-            $query= $query
+
+        if ($filter->getEndPrice() || $filter->getStartPrice() || $filter->getCity()) {
+            $query = $this
+                ->createQueryBuilder('a')
+                ->innerJoin('a.cities', 'c', 'WITH', 'c.id = :cityId');
+            if ($filter->getSubCategory()) {
+                $query->innerJoin('a.subCategory', 's', 'WITH', 's.title = :subCategoryTitle')
+                    ->innerJoin('s.categories', 'cat', 'WITH', 'cat.title = :categoryTitle');
+            }
+            $bol = 1;
+            if ($filter->getEndPrice()) {
+                $query = $query
                     ->andWhere('a.price <= :endPrice')
-                    -> setParameter('endPrice',$filter->getEndPrice());
+                    ->setParameter('endPrice', $filter->getEndPrice());
             }
 
-            if($filter->getStartPrice()){
-                $query= $query
-                        ->andWhere('a.price >= :startPrice')
-                        -> setParameter('startPrice',$filter->getStartPrice());
-                }
+            if ($filter->getStartPrice()) {
+                $query = $query
+                    ->andWhere('a.price >= :startPrice')
+                    ->setParameter('startPrice', $filter->getStartPrice());
+            }
 
-            if($filter->getCity()){
-                
-                $query= $query
-                        ->select('a as annonce , c as city')
-                         ->join('a.city', 'c')
-                        ->andWhere('a.city >= :city')
-                        -> setParameter('city',$filter->getCity());
-                }
+            if ($filter->getCity()) {
+                $query = $query->setParameter(':cityId', $filter->getCity()->getId());
+            }
 
-            $query= $query->getQuery();    
+            if ($filter->getSubCategory() != null) {
+                $query = $query->setParameter(':subCategoryTitle', $filter->getSubCategory());
+                if ($filter->getCategory()) {
+                    $query = $query->setParameter(':categoryTitle', $filter->getCategory());
+                }
+            }
+
+            $query = $query->getQuery();
         }
-        
 
-       
-        
-        if($bol)  return $query->getResult();
 
-         return $this->findAll();
+
+
+        if ($bol)  return $query->getResult();
+
+        return $this->findAll();
     }
 
 

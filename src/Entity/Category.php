@@ -24,9 +24,10 @@ class Category
     private $title;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SubCategory", mappedBy="category", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\SubCategory", inversedBy="categories")
      */
     private $subCategories;
+
 
     public function __construct()
     {
@@ -50,6 +51,11 @@ class Category
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->title;
+    }
+
     /**
      * @return Collection|SubCategory[]
      */
@@ -62,7 +68,6 @@ class Category
     {
         if (!$this->subCategories->contains($subCategory)) {
             $this->subCategories[] = $subCategory;
-            $subCategory->setCategory($this);
         }
 
         return $this;
@@ -72,17 +77,8 @@ class Category
     {
         if ($this->subCategories->contains($subCategory)) {
             $this->subCategories->removeElement($subCategory);
-            // set the owning side to null (unless already changed)
-            if ($subCategory->getCategory() === $this) {
-                $subCategory->setCategory(null);
-            }
         }
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->title;
     }
 }

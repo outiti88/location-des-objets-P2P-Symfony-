@@ -21,15 +21,13 @@ class Filter
     private $city;
 
     /**
-     * @Assert\Date(message="Attention la date de départ doit être au bon format")
-     * @Assert\GreaterThan("today", message="La date pour commencer doit être ulterieure à la date d'aujourd'hui")
+     *
      */
     private $startDate;
 
     /**
      * 
-     * @Assert\Date(message="Attention la date de départ doit être au bon format")
-     * @Assert\GreaterThan(propertyPath="startDate", message="La date pour commencer doit être plus éloignée de la date pour finir")
+     *
      */
     private $endDate;
 

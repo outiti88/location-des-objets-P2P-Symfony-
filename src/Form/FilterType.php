@@ -12,9 +12,11 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use App\Form\DataTransformer\FrenchToDateTimeTransformer;
 
 class FilterType extends ApplicationType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -26,8 +28,7 @@ class FilterType extends ApplicationType
                     "Selectionnez la ville",
                     [
                         'class' => City::class,
-                        'choice_label' => 'name',
-                        'mapped' => false
+                        'choice_label' => 'name'
                     ]
                 )
             )
@@ -71,7 +72,6 @@ class FilterType extends ApplicationType
                     'label' => 'Catégorie',
                     'class' => Category::class,
                     'choice_label' => 'title',
-                    'mapped' => false
                 ]
             )
 
@@ -82,7 +82,6 @@ class FilterType extends ApplicationType
                     'label' => 'Sous-catégorie',
                     'class' => SubCategory::class,
                     'choice_label' => 'title',
-                    'mapped' => false
                 ]
             );
     }
@@ -94,7 +93,6 @@ class FilterType extends ApplicationType
             'method' => 'get',
             'csrf_protection' => false
         ]);
-
     }
 
 
@@ -102,7 +100,4 @@ class FilterType extends ApplicationType
     {
         return '';
     }
-
-
-
 }

@@ -27,21 +27,32 @@ class AdController extends AbstractController
      * @Route("/ads", name="ads_index")
      * @return Response
      */
-    public function index(PaginatorInterface $paginator ,Request $request, AdRepository $repo, EntityManagerInterface $manager):Response
+    public function index(PaginatorInterface $paginator, Request $request, AdRepository $repo, EntityManagerInterface $manager): Response
     {
         $filter = new Filter();
-
         $form = $this->createForm(FilterType::class, $filter);
         $form->handleRequest($request);
-        //dump($request);
+        $ads = $repo->findFilter($filter);
+        foreach ($ads as $ad) {
+            $dates = $ad->getNotAvailableDays();
+            $dateStart = \DateTime::createFromFormat('d/m/Y', $filter->getStartDate());
+            $dateEnd = \DateTime::createFromFormat('d/m/Y', $filter->getEndDate());
+            foreach ($dates as $date) {
+                if ($date >= $dateStart && $date <= $dateEnd) {
+                    $key = array_search($ad, $ads, true);
+                    unset($ads[$key]);
+                    break;
+                }
+            }
+        }
 
         $ads = $paginator->paginate(
-            $repo->findFilter($filter),
+            $ads,
             $request->query->getInt('page', 1),
             6 //nombre d'annoces
         );
 
-    
+
         return $this->render('ad/index.html.twig', [
             'ads' => $ads,
             'form' => $form->createView()
@@ -63,7 +74,7 @@ class AdController extends AbstractController
         $categoryTitle = $postData->category;
         $subCategoryArray = [];
         $category = $catRepo->findOneByTitle($categoryTitle);
-        $subCategories = $subRepo->findByCategory($category);
+        $subCategories = $category->getSubCategories();
         foreach ($subCategories as $subCategory) {
             $subCategoryArray[] = [
                 'id' => $subCategory->getId(),

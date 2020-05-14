@@ -23,20 +23,21 @@ class SubCategory
      */
     private $title;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="subCategories")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Ad", mappedBy="subCategory")
      */
     private $ads;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", mappedBy="subCategories")
+     */
+    private $categories;
+
     public function __construct()
     {
         $this->ads = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -56,17 +57,6 @@ class SubCategory
         return $this;
     }
 
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Ad[]
@@ -102,5 +92,33 @@ class SubCategory
     public function __toString()
     {
         return $this->title;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addSubCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+            $category->removeSubCategory($this);
+        }
+
+        return $this;
     }
 }

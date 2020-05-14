@@ -24,9 +24,10 @@ class City
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Ad", mappedBy="city")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Ad", mappedBy="cities")
      */
     private $ads;
+
 
     public function __construct()
     {
@@ -50,6 +51,11 @@ class City
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     /**
      * @return Collection|Ad[]
      */
@@ -62,7 +68,7 @@ class City
     {
         if (!$this->ads->contains($ad)) {
             $this->ads[] = $ad;
-            $ad->setCity($this);
+            $ad->addCity($this);
         }
 
         return $this;
@@ -72,17 +78,9 @@ class City
     {
         if ($this->ads->contains($ad)) {
             $this->ads->removeElement($ad);
-            // set the owning side to null (unless already changed)
-            if ($ad->getCity() === $this) {
-                $ad->setCity(null);
-            }
+            $ad->removeCity($this);
         }
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
     }
 }

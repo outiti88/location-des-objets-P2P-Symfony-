@@ -77,21 +77,29 @@ class AppFixtures extends Fixture
         $subCategories["equipement bebe"] = array("lit bébé", "chaise haute", "couffin");
 
         $subCategoryObjects = [];
+        $categoryObjects = [];
+        $categoryAll = new Category;
+        $categoryAll->setTitle("Toutes les categories");
 
         foreach ($categories as $c) {
             $category = new Category;
-
             $category->setTitle($c);
             foreach ($subCategories[$c] as $s) {
                 $subCategory = new SubCategory;
                 $subCategory->setTitle($s)
-                    ->setCategory($category);
+                    ->addCategory($category)
+                    ->addCategory($categoryAll);
+                $category->addSubCategory($subCategory);
+                $categoryAll->addSubCategory($subCategory);
 
                 $subCategoryObjects[] = $subCategory;
-
                 $manager->persist($subCategory);
             }
-            $manager->persist($category);
+            $categoryObjects[] = $category;
+        }
+        $manager->persist($categoryAll);
+        foreach ($categoryObjects as $c) {
+            $manager->persist($c);
         }
         //Nous gérons les villes 
         $cities = array(
@@ -126,7 +134,8 @@ class AppFixtures extends Fixture
                 ->setPrice(mt_rand(40, 200))
                 ->setAuthor($user)
                 ->setSubCategory($subCategory)
-                ->setCity($cityObjects[mt_rand(1, count($cityObjects) - 1)]);
+                ->addCity($cityObjects[0])
+                ->addCity($cityObjects[mt_rand(1, count($cityObjects) - 1)]);
 
             //Nous gérons les annonces premium
             $premium = new Premium;

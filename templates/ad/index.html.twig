@@ -75,13 +75,29 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     $(document).ready(function(){
-        $('#filter_startDate, #filter_endDate').datepicker({
+        $('#startDate, #endDate').datepicker({
             format: 'dd/mm/yyyy',
             startDate: new Date()
         });
-        $('#category').prepend($("<option></option>").attr("value", 0).text("Toutes les categories"));
-        $('#category option[value="0"]').prop('selected', true);
-        $("#subCategory option").remove();
+        var cat = $("#category option:selected").text();
+            const url = "/ads/subCategory";
+            if(cat === "Toutes les categories")
+            {
+                $("#subCategory option").remove();
+            }else{
+                    axios.post(url, {
+                    category: cat
+                })
+                .then(function (response) {
+                    $("#subCategory option").remove();
+                    $('#subCategory').append($("<option></option>").attr("value", 0).text("Preciser :"));
+                    $.each(response.data, function (key, value) {
+                        $('#subCategory').append($("<option></option>").attr("value", value.id).text(value.title));
+                    });
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         $("#category").on('change', function () {
             var cat = $("#category option:selected").text();
             const url = "/ads/subCategory";

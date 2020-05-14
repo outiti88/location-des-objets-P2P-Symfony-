@@ -82,11 +82,7 @@ class Ad
     private $subCategory;
 
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="ads")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $city;
+
 
     /**
      * @var integer
@@ -98,11 +94,17 @@ class Ad
      */
     private $premiumDuration;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\City", inversedBy="ads")
+     */
+    private $cities;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->bookings = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->cities = new ArrayCollection();
     }
 
     /**
@@ -397,14 +399,28 @@ class Ad
         return $this;
     }
 
-    public function getCity(): ?City
+    /**
+     * @return Collection|City[]
+     */
+    public function getCities(): Collection
     {
-        return $this->city;
+        return $this->cities;
     }
 
-    public function setCity(?City $city): self
+    public function addCity(City $city): self
     {
-        $this->city = $city;
+        if (!$this->cities->contains($city)) {
+            $this->cities[] = $city;
+        }
+
+        return $this;
+    }
+
+    public function removeCity(City $city): self
+    {
+        if ($this->cities->contains($city)) {
+            $this->cities->removeElement($city);
+        }
 
         return $this;
     }
