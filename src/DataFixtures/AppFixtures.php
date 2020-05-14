@@ -134,6 +134,7 @@ class AppFixtures extends Fixture
                 ->setPrice(mt_rand(40, 200))
                 ->setAuthor($user)
                 ->setSubCategory($subCategory)
+                ->setBlackListed(false)
                 ->addCity($cityObjects[0])
                 ->addCity($cityObjects[mt_rand(1, count($cityObjects) - 1)]);
 
@@ -199,7 +200,8 @@ class AppFixtures extends Fixture
                 //Gestion des commentaires
                 if (mt_rand(0, 1)) {
                     $comment = new Comment;
-                    $comment->setContent($faker->paragraph())
+                    $comment->setPositiveComment($faker->paragraph())
+                        ->setNegativeComment($faker->paragraph())
                         ->setRating(mt_rand(1, 5))
                         ->setAuthor($booker)
                         ->setAd($ad);

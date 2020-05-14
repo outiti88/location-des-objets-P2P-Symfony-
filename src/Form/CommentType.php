@@ -25,9 +25,19 @@ class CommentType extends ApplicationType
                     ]
                 ]
             ))
-            ->add('content', TextareaType::class, $this->getConfiguration(
-                "Votre avis / témoignage",
-                "N'hésitez pas à être trés précis, cela aidera nos futurs clients !"
+            ->add('positiveComment', TextareaType::class, $this->getConfiguration(
+                "Votre avis / témoignage (positif)",
+                "N'hésitez pas à être trés précis, cela aidera nos futurs clients !",
+                [
+                    'required' => false
+                ]
+            ))
+            ->add('negativeComment', TextareaType::class, $this->getConfiguration(
+                "Votre avis / témoignage (negatif)",
+                "N'hésitez pas à être trés précis, cela aidera nos futurs clients !",
+                [
+                    'required' => false
+                ]
             ));
     }
 

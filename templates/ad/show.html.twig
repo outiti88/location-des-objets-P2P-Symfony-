@@ -144,10 +144,13 @@
                              <h5>
                                 <a href="{{path('user_show', {'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
                             </h5>
-                            <p class="comment"> {{ comment.content }} </p>
+                            <p>Commentaire positif :</p>
+                            <blockquote> {{ comment.positiveComment }} </blockquote>
+                            <p>Commentaire négatif :</p>
+                            <blockquote> {{ comment.negativeComment }} </blockquote>
                              <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
-                                    <p class="date"><strong>la note de </strong>
+                                    <p class="date"><strong>la note de {{ comment.author.fullName }}</strong>
                                      {% include 'partials/rating.html.twig' with {'rating': comment.rating } %}</p>
                                  </div>
 

@@ -76,9 +76,17 @@
                     {% if date() > date(booking.endDate) %}
                         {% set comment = booking.ad.commentFromAuthor(app.user) %}
                         {% if comment is not null %}
-                            <blockquote>{{ comment.content }}</blockquote>
-
-                            <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating': comment.rating} %}
+                        <div class="row">
+                            <div class="col-md-5">
+                                <p>Commentaire positif :</p>
+                                <strong><blockquote>{{ comment.positiveComment }}</blockquote></strong>
+                            </div>
+                            <div class="col-md-5-offset-2">
+                                <p>Commentaire négatif :</p>
+                                <strong><blockquote>{{ comment.negativeComment }}</blockquote></strong>
+                            </div>
+                        </div>
+                        <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating': comment.rating} %}
                         {% else %}
                         {{ form_start(form) }}
                         {{ form_widget(form)}}

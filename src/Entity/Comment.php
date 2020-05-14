@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -27,10 +29,6 @@ class Comment
      */
     private $rating;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Ad", inversedBy="comments")
@@ -43,6 +41,17 @@ class Comment
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $positiveComment;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $negativeComment;
+
 
     /**
      * Permet de mettre en place une date de création
@@ -87,17 +96,6 @@ class Comment
         return $this;
     }
 
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
 
     public function getAd(): ?Ad
     {
@@ -121,5 +119,39 @@ class Comment
         $this->author = $author;
 
         return $this;
+    }
+
+    public function getPositiveComment(): ?string
+    {
+        return $this->positiveComment;
+    }
+
+    public function setPositiveComment(?string $positiveComment): self
+    {
+        $this->positiveComment = $positiveComment;
+
+        return $this;
+    }
+
+    public function getNegativeComment(): ?string
+    {
+        return $this->negativeComment;
+    }
+
+    public function setNegativeComment(?string $negativeComment): self
+    {
+        $this->negativeComment = $negativeComment;
+
+        return $this;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validateFields(ExecutionContextInterface $context)
+    {
+        if ('' === $this->positiveComment && '' === $this->negativeComment) {
+            $context->addViolation('Un commentaire positif ou bien négatif doit être ajouté');
+        }
     }
 }
