@@ -203,7 +203,8 @@ class AdController extends AbstractController
      */
     function delete(Ad $ad, EntityManagerInterface $manager)
     {
-        $manager->remove($ad);
+        $ad->setBlackListed(true);
+        $manager->persist($ad);
         $manager->flush();
 
         $this->addFlash(

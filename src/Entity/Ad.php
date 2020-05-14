@@ -99,6 +99,11 @@ class Ad
      */
     private $cities;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $blackListed;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -421,6 +426,18 @@ class Ad
         if ($this->cities->contains($city)) {
             $this->cities->removeElement($city);
         }
+
+        return $this;
+    }
+
+    public function getBlackListed(): ?bool
+    {
+        return $this->blackListed;
+    }
+
+    public function setBlackListed(bool $blackListed): self
+    {
+        $this->blackListed = $blackListed;
 
         return $this;
     }

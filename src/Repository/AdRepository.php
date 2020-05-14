@@ -60,6 +60,8 @@ class AdRepository extends ServiceEntityRepository
                 $query->innerJoin('a.subCategory', 's', 'WITH', 's.title = :subCategoryTitle')
                     ->innerJoin('s.categories', 'cat', 'WITH', 'cat.title = :categoryTitle');
             }
+            $query->andWhere('a.blackListed = :blackListed')
+                ->setParameter('blackListed', false);
             $bol = 1;
             if ($filter->getEndPrice()) {
                 $query = $query
@@ -90,9 +92,15 @@ class AdRepository extends ServiceEntityRepository
 
 
 
-        if ($bol)  return $query->getResult();
-
-        return $this->findAll();
+        if ($bol) {
+            return $query->getResult();
+        } else {
+            $query = $this
+                ->createQueryBuilder('a')
+                ->andWhere('a.blackListed = :blackListed')
+                ->setParameter('blackListed', false);
+            return $query->getQuery()->getResult();
+        }
     }
 
 

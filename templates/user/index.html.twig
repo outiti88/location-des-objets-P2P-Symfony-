@@ -51,7 +51,9 @@
         {% if user.ads | length > 0 %}
             <div class="row">
                 {% for ad in user.ads %}
-                    {% include 'ad/_ad.html.twig' %}
+                    {% if ad.blackListed != true %}
+                        {% include 'ad/_ad.html.twig' %}
+                    {% endif %}
                 {% endfor %}
             </div>
         {% else %}
