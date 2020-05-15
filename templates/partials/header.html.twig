@@ -23,6 +23,10 @@
                                                     <li><a href="{{path('ads_create')}}">Creer une annonce</a></li>
                                                 </ul>
                                             </li>
+                                            {% if app.user %}
+                                               <li><a href="{{ path('account_bookings') }}">Mes Reservations</a></li>
+                                                <li><a href="{{ path('account_demande') }}">Les Demandes</a></li> 
+                                            {% endif %}
                                             <li><a href="#">Contact</a></li>
                                         </ul>
                                     </nav>
@@ -37,7 +41,7 @@
                                             <ul class="submenu">
                                                 <li><a href="{{path('ads_create')}}">Creer une annonce</a></li>
                                                 <li><a href="{{ path('account_index') }}">Mon compte</a></li>
-                                                <li><a href="{{ path('account_bookings') }}">Mes Reservations</a></li>
+                                                
                                                 <li><a href="{{ path('account_profile') }}">
                                                         Modifier Mon profile
                                                     </a></li>
@@ -70,15 +74,3 @@
             </div>
         </div>
     </header>
-
-        {% for label, messages in app.flashes %}
-
-            <div class="container mt-5">
-                <div class="alert alert-{{ label }} text-center">
-                    {% for message in messages %}
-                        <p> {{ message | raw }} </p>
-                    {% endfor %}
-                </div>
-            </div>
-
-        {% endfor %}

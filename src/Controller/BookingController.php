@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use Twig\Environment;
 use App\Entity\Booking;
 use App\Entity\Comment;
 use App\Form\BookingType;
 use App\Form\CommentType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -20,7 +23,7 @@ class BookingController extends AbstractController
      * @Route("/ads/{slug}/book", name="booking_create")
      * @IsGranted("ROLE_USER")
      */
-    public function book(Ad $ad, Request $request, EntityManagerInterface $manager)
+    public function book(Ad $ad, Request $request, EntityManagerInterface $manager, MailerInterface $mailer , Environment $rendere)
     {
         $booking = new Booking;
         $form = $this->createForm(BookingType::class, $booking);
@@ -39,13 +42,30 @@ class BookingController extends AbstractController
                     "Les dates que vous avez choisies ne peuvent être réservées : elles sont déja prises."
                 );
             } else {
+                //$notification->notify($booking);
                 $manager->persist($booking);
                 $manager->flush();
+                $subject = "Demande de confirmation de la reservation numero " . $booking->getId();
+                $email = (new TemplatedEmail())
+                ->from($user->getEmail())
+                ->to($ad->getAuthor()->getEmail())
+
+                ->subject($subject)
+                ->htmlTemplate('emails/confirmation.html.twig')
+                ->context([
+                    'booking' => $booking,
+                    'to' => $ad->getAuthor(),
+                    'from' => $user,
+                ])
+                ;
+                $mailer->send($email);
+
+               
 
                 return $this->redirectToRoute('booking_show', [
                     'id' => $booking->getId(),
                     'withAlert' => true
-                ]);
+                ]); 
             }
         }
 
@@ -65,28 +85,93 @@ class BookingController extends AbstractController
      */
     public function show(Booking $booking, Request $request, EntityManagerInterface $manager)
     {
-        $comment = new Comment;
+        if($this->getUser()==$booking->getBooker()){
+            $comment = new Comment;
 
-        $form = $this->createForm(CommentType::class, $comment);
+            $form = $this->createForm(CommentType::class, $comment);
+    
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                $comment->setAd($booking->getAd())
+                    ->setAuthor($this->getUser());
+    
+                $manager->persist($comment);
+                $manager->flush();
+    
+                $this->addFlash(
+                    "success",
+                    "Votre commentaire a bien été pris en compte !"
+                );
+            }
+    
+            return $this->render('booking/show.html.twig', [
+                'booking' => $booking,
+                'form' => $form->createView()
+            ]);
 
-        $form->handleRequest($request);
+        } else {
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setAd($booking->getAd())
-                ->setAuthor($this->getUser());
-
-            $manager->persist($comment);
-            $manager->flush();
-
-            $this->addFlash(
-                "success",
-                "Votre commentaire a bien été pris en compte !"
-            );
+            return $this->redirectToRoute("account_bookings");
         }
+    }
 
-        return $this->render('booking/show.html.twig', [
-            'booking' => $booking,
-            'form' => $form->createView()
+        /**
+     * Permet de confirmer une demande dereservation
+     * 
+     * @Route("/demande/{id}/confirm", name="demande_confirm")
+     * 
+     *
+     * @return Response
+     */
+    function confirm(Booking $booking, EntityManagerInterface $manager)
+    {   
+        $booking->setConfirm(1);
+        $manager->persist($booking);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "La rervation num: <strong>{$booking->getId()}</strong> a bien été confirmée"
+        );
+
+        return $this->redirectToRoute("account_demande");
+    }
+
+       /**
+     * permet d'afficher une seule demande de reservation
+     *
+     * @Route("/demande/{id}", name="demande_show")
+     * 
+     * @return Response
+     */
+    function showDemande(Booking $booking)
+    {
+        return $this->render('booking/demande.html.twig', [
+            "booking" => $booking
         ]);
     }
+
+        /**
+     * Permet de supprimer une reservation non confirmée
+     * 
+     * @Route("/demande/{id}/delete", name="demande_delete")
+     *
+     * @return Response
+     */
+    function delete(Booking $booking, EntityManagerInterface $manager)
+    {
+        $manager->remove($booking);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "La demande <strong>{$booking->getId()}</strong> a bien été supprimée"
+        );
+
+        return $this->redirectToRoute("account_demande");
+    }
+
+
+
 }

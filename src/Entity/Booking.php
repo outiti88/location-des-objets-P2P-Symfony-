@@ -60,6 +60,11 @@ class Booking
     private $comment;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $confirm;
+
+    /**
      * Callback appelé à chaque fois qu'on crée une réservation
      *
      * @ORM\PrePersist
@@ -68,6 +73,11 @@ class Booking
      */
     function prePersist()
     {
+
+        if (empty($this->confirm)) {
+            $this->confirm = 0;
+        }
+
         if (empty($this->createdAt)) {
             $this->createdAt = new \DateTime();
         }
@@ -212,6 +222,18 @@ class Booking
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getConfirm(): ?int
+    {
+        return $this->confirm;
+    }
+
+    public function setConfirm(?int $confirm): self
+    {
+        $this->confirm = $confirm;
 
         return $this;
     }

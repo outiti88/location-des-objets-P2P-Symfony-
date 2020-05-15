@@ -19,6 +19,8 @@
             </div>
         </div>
     </div>
+        {% include 'partials/message.html.twig' %}
+
     <div class="container" id="body">
         <h2>Réservez pour l'annonce : {{ ad.title }}</h2>
         <p>Vous êtes sur le point de reserver le bien de <strong>{{ ad.author.fullName }}</strong>, dites nous tout on s'occupe du reste !</p>
