@@ -54,7 +54,7 @@ class AdType extends ApplicationType
             )
 
             ->add(
-                'city',
+                'cities',
                 EntityType::class,
                 $this->getConfiguration(
                     "Ville",

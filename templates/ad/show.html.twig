@@ -1,3 +1,4 @@
+  
 {% extends 'base.html.twig' %}
 
 {% block title %}
@@ -9,20 +10,16 @@
     .bg-image {
         /* The image used */
         background-image: url("photographer.jpg");
-
         /* Add the blur effect */
         filter: blur(8px);
         -webkit-filter: blur(8px);
-
         /* Full height */
         height: 100%;
-
         /* Center and scale the image nicely */
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
     }
-
     /* Position text in the middle of the page/image */
     .bg-text {
         background-color: rgb(0, 0, 0);
@@ -32,7 +29,6 @@
         color: white;
         font-weight: bold;
         border: 3px solid #f1f1f1;
-
         text-align: center;
     }
 </style>
@@ -68,6 +64,7 @@
     </div>
 </div>
 
+    {% include 'partials/message.html.twig' %}
 
 
 
@@ -144,13 +141,10 @@
                              <h5>
                                 <a href="{{path('user_show', {'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
                             </h5>
-                            <p>Commentaire positif :</p>
-                            <blockquote> {{ comment.positiveComment }} </blockquote>
-                            <p>Commentaire négatif :</p>
-                            <blockquote> {{ comment.negativeComment }} </blockquote>
+                            <p class="comment"> {{ comment.content }} </p>
                              <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
-                                    <p class="date"><strong>la note de {{ comment.author.fullName }}</strong>
+                                    <p class="date"><strong>la note de </strong>
                                      {% include 'partials/rating.html.twig' with {'rating': comment.rating } %}</p>
                                  </div>
 

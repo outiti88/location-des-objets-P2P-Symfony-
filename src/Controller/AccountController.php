@@ -184,4 +184,16 @@ class AccountController extends AbstractController
     {
         return $this->render('account/bookings.html.twig');
     }
+
+    /**
+     * Permet d'afficher la liste des demandes des reservations 
+     *
+     * @Route("/account/demande", name="account_demande")
+     * 
+     * @return Response
+     */
+    public function demande()
+    {
+        return $this->render('account/demande.html.twig');
+    }
 }

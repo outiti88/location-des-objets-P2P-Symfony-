@@ -19,6 +19,8 @@
             </div>
         </div>
     </div>
+        {% include 'partials/message.html.twig' %}
+
     <div class="container" id="body">
         <h2>Réservez pour l'annonce : {{ ad.title }}</h2>
         <p>Vous êtes sur le point de reserver le bien de <strong>{{ ad.author.fullName }}</strong>, dites nous tout on s'occupe du reste !</p>
@@ -64,18 +66,15 @@
         });
         $('#booking_startDate, #booking_endDate').on('change', calculateAmount);
     })
-
     function calculateAmount() {
         const endDate = new Date($('#booking_endDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/, '$3-$2-$1'));
         const startDate = new Date($('#booking_startDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/, '$3-$2-$1'));
-
         if(endDate && startDate && endDate > startDate)
         {   
             const DAY_TIME = 24 * 60 * 60 *1000;
             const interval = endDate.getTime() - startDate.getTime();
             const days = interval / DAY_TIME;
             const amount = days * {{ ad.price }};
-
             $('#days').text(days);
             $('#amount').text(amount.toLocaleString('fr-FR'));
         }

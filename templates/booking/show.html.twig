@@ -9,6 +9,14 @@
                 <div class="col-xl-12">
                     <div class="bradcam_text text-center">
                         <h3>Votre réservation (n°{{ booking.id }})</h3>
+                        <h2 style="color : white">
+                            {% if booking.confirm == 1 %}
+                                Cette reservation a été confirméé par son proprietaire
+                            {% else %}
+                                Cette reservation est en attente de confirmation par son proprietaire
+
+                            {% endif %}
+                        </h2>
                     </div>
                 </div>
             </div>
@@ -73,29 +81,28 @@
                 </div>
                 <div class="alert alert-light" id="comment">
                     <h2 class="alert-heading">Votre avis compte !</h2>
-                    {% if date() > date(booking.endDate) %}
-                        {% set comment = booking.ad.commentFromAuthor(app.user) %}
-                        {% if comment is not null %}
-                        <div class="row">
-                            <div class="col-md-5">
-                                <p>Commentaire positif :</p>
-                                <strong><blockquote>{{ comment.positiveComment }}</blockquote></strong>
-                            </div>
-                            <div class="col-md-5-offset-2">
-                                <p>Commentaire négatif :</p>
-                                <strong><blockquote>{{ comment.negativeComment }}</blockquote></strong>
-                            </div>
-                        </div>
-                        <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating': comment.rating} %}
+                        {% if booking.confirm == 0 %}
+                           <p>Cette reservation est en attente de confirmation par son proprietaire...</p>
+
                         {% else %}
-                        {{ form_start(form) }}
-                        {{ form_widget(form)}}
-                        <button type="submit" class="btn genric-btn danger-border">Confirmer</button>
-                        {{ form_end(form) }}
+                            
+                            {% if date() > date(booking.endDate) %}
+                                {% set comment = booking.ad.commentFromAuthor(app.user) %}
+                                {% if comment is not null %}
+                                    <blockquote>{{ comment.content }}</blockquote>
+
+                                    <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating': comment.rating} %}
+                                {% else %}
+                                    {{ form_start(form) }}
+                                    {{ form_widget(form)}}
+                                    <button type="submit" class="btn genric-btn danger-border">Confirmer</button>
+                                    {{ form_end(form) }}
+                                {% endif %}
+                            {% else %}
+                                <p>Vous ne pourrez pas noter cette annonce tant que votre location ne sera pas complete !</p>
+                            {% endif %}
+                                    
                         {% endif %}
-                    {% else %}
-                        <p>Vous ne pourrez pas noter cette annonce tant que votre location ne sera pas complete !</p>
-                    {% endif %}
                 </div>
             </div>
             <div class="col">

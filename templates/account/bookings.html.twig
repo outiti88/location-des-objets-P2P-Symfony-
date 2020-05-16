@@ -23,6 +23,11 @@
         {% for booking in app.user.bookings %}
             <div class="row mt-5">
                 <div class="col-4">
+                    {% if booking.confirm == 0 %}
+                        <h5>Reservation en attente de confirmation....</h5>
+                    {% else %}
+                        <h5>reservation a été confirméé par son proprietaire</h5>
+                    {% endif %}
                     <img src="{{ booking.ad.coverImage }}" alt="Photo de l'annonce {{ booking.ad.title }}" class="img-fluid">
 
                     <div class="mt-3">
