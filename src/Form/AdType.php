@@ -54,14 +54,15 @@ class AdType extends ApplicationType
             )
 
             ->add(
-                'city',
+                'cities',
                 EntityType::class,
                 $this->getConfiguration(
                     "Ville",
                     "Sélectionnez votre ville",
                     [
                         'class' => 'App\Entity\City',
-                        'choice_label' => 'name'
+                        'choice_label' => 'name',
+                        'multiple' => true
                     ]
                 )
             )

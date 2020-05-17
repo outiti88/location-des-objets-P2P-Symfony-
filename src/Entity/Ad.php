@@ -124,6 +124,9 @@ class Ad
             $slugify = new Slugify;
             $this->slug = $slugify->slugify($this->title);
         }
+        if (empty($this->blackListed)) {
+            $this->blackListed = 0;
+        }
     }
 
     /**

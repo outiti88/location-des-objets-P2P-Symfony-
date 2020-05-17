@@ -10,6 +10,7 @@ use App\Entity\Premium;
 use App\Form\FilterType;
 use App\Repository\AdRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SubCategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -92,7 +93,7 @@ class AdController extends AbstractController
      *
      * @return Response
      */
-    function create(Request $request, EntityManagerInterface $manager)
+    function create(Request $request, EntityManagerInterface $manager, CityRepository $cityRepository)
     {
         $ad = new Ad;
 
@@ -120,6 +121,9 @@ class AdController extends AbstractController
             $ad->setAuthor($this->getUser());
 
             $manager->persist($premium);
+
+            $city = $cityRepository->findOneByName("Tout Le maroc");
+            $ad->addCity($city);
             $manager->persist($ad);
             $manager->flush();
 
