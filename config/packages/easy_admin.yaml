@@ -1,0 +1,44 @@
+easy_admin:
+
+    design:
+      
+
+
+        menu:
+          - {label: "Gerer les Entités: "}
+
+          - label: "Annonce"
+            children:
+              - {entity: Ad , label: Annonce, icon: desktop}
+              - {entity: Premium , label: Premium, icon: "magic"}
+              - {entity: City , label: Ville, icon: globe}
+          - label: "Categorie"
+            children:
+              - {entity: Category , label: Categories , icon: "th-list"}
+              - {entity: SubCategory , label: Sous categories, icon: "table"}
+          
+          - label: "Reservation"
+            children:
+              - {entity: Booking , label: Reservation, icon: shopping-cart}
+              - {entity: Comment  , label: Commentaires, icon: comments}
+          
+          - {label: "Configuration"}
+          - {entity: User , label: Utilisateur , icon: "user"}
+          
+
+          
+
+              
+
+    site_name: 'Adminstrateur du site'
+
+    entities:
+        # List the entity class name you want to manage
+        - App\Entity\Ad
+        - App\Entity\Category
+        - App\Entity\SubCategory
+        - App\Entity\Booking
+        - App\Entity\City
+        - App\Entity\User
+        - App\Entity\Comment
+        - App\Entity\Premium

@@ -124,7 +124,12 @@ class Ad
             $slugify = new Slugify;
             $this->slug = $slugify->slugify($this->title);
         }
+        if (empty($this->blackListed)) {
+            $this->blackListed = 0;
+        }
     }
+
+    
 
     /**
      * Permet de récuperer le commentaire d'un auteur par rapport à une annonce
@@ -440,5 +445,10 @@ class Ad
         $this->blackListed = $blackListed;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->title;
     }
 }

@@ -61,7 +61,8 @@ class AdType extends ApplicationType
                     "Sélectionnez votre ville",
                     [
                         'class' => 'App\Entity\City',
-                        'choice_label' => 'name'
+                        'choice_label' => 'name',
+                        'multiple' => true
                     ]
                 )
             )

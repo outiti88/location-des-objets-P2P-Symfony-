@@ -52,6 +52,13 @@ class Comment
      */
     private $negativeComment;
 
+    private $content;
+    public function getContent(): ?string
+    {
+        return $this->positiveComment;
+    }
+    
+
 
     /**
      * Permet de mettre en place une date de création
@@ -125,6 +132,8 @@ class Comment
     {
         return $this->positiveComment;
     }
+
+    
 
     public function setPositiveComment(?string $positiveComment): self
     {

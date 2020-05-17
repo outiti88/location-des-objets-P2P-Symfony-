@@ -146,10 +146,17 @@ class BookingController extends AbstractController
      * @return Response
      */
     function showDemande(Booking $booking)
+
     {
+        if($this->getUser()==$booking->getAd()->getAuthor()){
+
         return $this->render('booking/demande.html.twig', [
             "booking" => $booking
         ]);
+    }
+    else {
+        return $this->redirectToRoute("account_demande");
+    }
     }
 
         /**
