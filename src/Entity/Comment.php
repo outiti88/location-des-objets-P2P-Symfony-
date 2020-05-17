@@ -163,4 +163,8 @@ class Comment
             $context->addViolation('Un commentaire positif ou bien négatif doit être ajouté');
         }
     }
+
+    public function __toString(){
+        return $this->getContent();
+    }
 }
