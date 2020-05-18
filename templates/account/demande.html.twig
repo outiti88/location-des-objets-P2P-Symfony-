@@ -3,35 +3,38 @@
 {% block title %}Les demandes de reservation{% endblock %}
 
 {% block body %}
-    <div class="bradcam_area breadcam_bg_2">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="bradcam_text text-center">
-                        <h3>Les demandes des reservations</h3>
-                    </div>
+<div class="bradcam_area breadcam_bg_2">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text text-center">
+                    <h3>Les demandes des reservations</h3>
                 </div>
             </div>
         </div>
     </div>
-        
-    {% include 'partials/message.html.twig' %}
+</div>
 
-        
-    <div class="container" id="body">
-        <h1>Les demandes à traiter</h1>
-        <div class="alert alert-info mt-5">
-            <p>Retrouvez ci-dessous toutes Les demandes de location de vos articles </p>
-        </div>
+{% include 'partials/message.html.twig' %}
 
-        {% for ads in app.user.ads %}
-            {% for booking in ads.bookings  %}
-                
-             <div class="col-lg-8 mb-5 mb-lg-0">
+
+<div class="container" id="body">
+    <h1>Les demandes à traiter</h1>
+    <div class="alert alert-info mt-5">
+        <p>Retrouvez ci-dessous toutes Les demandes de location de vos articles </p>
+    </div>
+
+    {% for ads in app.user.ads %}
+
+        {% for booking in ads.bookings  %}
+
+            {% if booking.confirm > -1 &&  date(booking.createdAt) > date('-2days')  %}
+
+                <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="blog_left_sidebar">
                         <article class="blog_item">
                             <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="{{ booking.ad.coverImage }}" alt="Photo de l'annonce {{ booking.ad.title }}" >
+                                <img class="card-img rounded-0" src="{{ booking.ad.coverImage }}" alt="Photo de l'annonce {{ booking.ad.title }}">
                                 <a href="{{ path('demande_show' , {'id': booking.id}) }}" class="blog_item_date">
                                     <h3>{{ booking.createdAt | date("d") }}</h3>
                                     <p>{{ booking.createdAt | date("F")  }}</p>
@@ -45,24 +48,24 @@
                                 <p>Réservation <strong>n°{{ booking.id }}</strong><br>
                                     Du {{ booking.startDate | date('d/m/Y') }} au {{ booking.endDate | date('d/m/Y') }} ({{ booking.amount }}Dhs)</p>
                                 <ul class="blog-info-link">
-                                {% if booking.confirm == 1  %}
+
+                                    {% if booking.confirm == 1  %}
                                         <li><a href="#" disable><i class="fas fa-check-circle"></i> Reservation Confirmée</a></li>
-                                {% else %}
-                                    <li><a class="genric-btn info  circle" href="{{ path('demande_confirm' , {'id': booking.id}) }}"><i class="fas fa-check-circle"></i>Confirmer</a></li>
-                                    <li><a class="genric-btn danger   circle" href="{{ path('demande_delete' , {'id': booking.id}) }}"><i class="fas fa-minus-circle"></i> Refuser </a></li>
-                                    
-                                {% endif %}   
-                                    
+                                    {% else %}
+                                        <li><a class="genric-btn info  circle" href="{{ path('demande_confirm' , {'id': booking.id}) }}"><i class="fas fa-check-circle"></i>Confirmer</a></li>
+                                        <li><a class="genric-btn danger   circle" href="{{ path('demande_delete' , {'id': booking.id}) }}"><i class="fas fa-minus-circle"></i> Refuser </a></li>
+
                                 </ul>
                             </div>
                         </article>
 
                     </div>
                 </div>
-    
 
-             {% endfor %}
+            {% endif %}
+
         {% endfor %}
-    </div>
+    {% endfor %}
+</div>
 
 {% endblock %}

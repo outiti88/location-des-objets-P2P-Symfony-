@@ -23,7 +23,7 @@ class BookingController extends AbstractController
      * @Route("/ads/{slug}/book", name="booking_create")
      * @IsGranted("ROLE_USER")
      */
-    public function book(Ad $ad, Request $request, EntityManagerInterface $manager, MailerInterface $mailer , Environment $rendere)
+    public function book(Ad $ad, Request $request, EntityManagerInterface $manager, MailerInterface $mailer )
     {
         $booking = new Booking;
         $form = $this->createForm(BookingType::class, $booking);
@@ -49,7 +49,6 @@ class BookingController extends AbstractController
                 $email = (new TemplatedEmail())
                 ->from($user->getEmail())
                 ->to($ad->getAuthor()->getEmail())
-
                 ->subject($subject)
                 ->htmlTemplate('emails/confirmation.html.twig')
                 ->context([
@@ -168,7 +167,9 @@ class BookingController extends AbstractController
      */
     function delete(Booking $booking, EntityManagerInterface $manager)
     {
-        $manager->remove($booking);
+        //$manager->remove($booking);
+        $booking->delete();
+        $manager->persist($booking);
         $manager->flush();
 
         $this->addFlash(

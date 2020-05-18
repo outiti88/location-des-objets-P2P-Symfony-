@@ -242,4 +242,8 @@ class Booking
     {   $i=$this->id."";
         return $i;
     }
+
+    public function delete(){
+        $this->setConfirm(-1);
+    }
 }
