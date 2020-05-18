@@ -28,7 +28,7 @@
 
         {% for booking in ads.bookings  %}
 
-            {% if booking.confirm > -1 &&  date(booking.createdAt) > date('-2days')  %}
+            {% if booking.confirm > -1 and  date(booking.createdAt) > date('-2days')  %}
 
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="blog_left_sidebar">
@@ -54,7 +54,7 @@
                                     {% else %}
                                         <li><a class="genric-btn info  circle" href="{{ path('demande_confirm' , {'id': booking.id}) }}"><i class="fas fa-check-circle"></i>Confirmer</a></li>
                                         <li><a class="genric-btn danger   circle" href="{{ path('demande_delete' , {'id': booking.id}) }}"><i class="fas fa-minus-circle"></i> Refuser </a></li>
-
+                                    {% endif %}
                                 </ul>
                             </div>
                         </article>
