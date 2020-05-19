@@ -59,6 +59,7 @@
         {{ form_end(form) }}
         </div>
     <div class="row">
+        {% set premium = 0 %}
         {% for ad in ads %}
             {% include 'ad/_ad.html.twig' %}
         {% endfor %}

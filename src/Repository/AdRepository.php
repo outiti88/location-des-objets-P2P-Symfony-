@@ -98,7 +98,8 @@ class AdRepository extends ServiceEntityRepository
             $query = $this
                 ->createQueryBuilder('a')
                 ->andWhere('a.blackListed = :blackListed')
-                ->setParameter('blackListed', false);
+                ->setParameter('blackListed', false)
+                ->orderBy('a.premiumValue');
             return $query->getQuery()->getResult();
         }
     }

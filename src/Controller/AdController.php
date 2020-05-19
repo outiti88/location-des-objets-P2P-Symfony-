@@ -11,6 +11,7 @@ use App\Form\FilterType;
 use App\Repository\AdRepository;
 use App\Repository\CityRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\PremiumRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SubCategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -28,12 +29,16 @@ class AdController extends AbstractController
      * @Route("/ads", name="ads_index")
      * @return Response
      */
-    public function index(PaginatorInterface $paginator, Request $request, AdRepository $repo, EntityManagerInterface $manager): Response
+    public function index(PaginatorInterface $paginator, Request $request, AdRepository $repo, PremiumRepository $premiumRepository, EntityManagerInterface $manager): Response
     {
         $filter = new Filter();
         $form = $this->createForm(FilterType::class, $filter);
         $form->handleRequest($request);
-        $ads = $repo->findFilter($filter);
+        $premiums = $premiumRepository->findFilter($filter);
+        $ads = array();
+        foreach ($premiums as $premium) {
+            $ads[] = $premium->getAd();
+        }
         foreach ($ads as $ad) {
             $dates = $ad->getNotAvailableDays();
             $dateStart = \DateTime::createFromFormat('d/m/Y', $filter->getStartDate());

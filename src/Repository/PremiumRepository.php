@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Filter;
 use App\Entity\Premium;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Premium|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,80 @@ class PremiumRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Premium::class);
+    }
+
+    public function findBestAds()
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.ad', 'a')
+            ->andWhere('a.blackListed = :blackListed')
+            ->setParameter('blackListed', false)
+            ->groupBy('a')
+            ->addOrderBy('p.value', 'DESC')
+            ->addOrderBy('p.startDate', 'DESC')
+            //->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findFilter(Filter $filter)
+    {
+        $bol = 0;
+
+        if ($filter->getEndPrice() || $filter->getStartPrice() || $filter->getCity()) {
+            $query = $this
+                ->createQueryBuilder('p')
+                ->innerJoin('p.ad', 'a')
+                ->innerJoin('a.cities', 'c', 'WITH', 'c.id = :cityId');
+            if ($filter->getSubCategory()) {
+                $query->innerJoin('a.subCategory', 's', 'WITH', 's.title = :subCategoryTitle')
+                    ->innerJoin('s.categories', 'cat', 'WITH', 'cat.title = :categoryTitle');
+            }
+            $query->andWhere('a.blackListed = :blackListed')
+                ->setParameter('blackListed', false)
+                ->groupBy('a')
+                ->addOrderBy('p.value', 'DESC')
+                ->addOrderBy('p.startDate', 'DESC');
+            $bol = 1;
+            if ($filter->getEndPrice()) {
+                $query = $query
+                    ->andWhere('a.price <= :endPrice')
+                    ->setParameter('endPrice', $filter->getEndPrice());
+            }
+
+            if ($filter->getStartPrice()) {
+                $query = $query
+                    ->andWhere('a.price >= :startPrice')
+                    ->setParameter('startPrice', $filter->getStartPrice());
+            }
+
+            if ($filter->getCity()) {
+                $query = $query->setParameter(':cityId', $filter->getCity()->getId());
+            }
+
+            if ($filter->getSubCategory() != null) {
+                $query = $query->setParameter(':subCategoryTitle', $filter->getSubCategory());
+                if ($filter->getCategory()) {
+                    $query = $query->setParameter(':categoryTitle', $filter->getCategory());
+                }
+            }
+
+            $query = $query->getQuery();
+        }
+
+        if ($bol) {
+            return $query->getResult();
+        } else {
+            $query = $this
+                ->createQueryBuilder('p')
+                ->join('p.ad', 'a')
+                ->andWhere('a.blackListed = :blackListed')
+                ->setParameter('blackListed', false)
+                ->groupBy('a')
+                ->addOrderBy('p.value', 'DESC')
+                ->addOrderBy('p.startDate', 'DESC');
+            return $query->getQuery()->getResult();
+        }
     }
 
     // /**
