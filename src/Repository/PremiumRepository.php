@@ -20,7 +20,7 @@ class PremiumRepository extends ServiceEntityRepository
         parent::__construct($registry, Premium::class);
     }
 
-    public function findBestAds($limit)
+    public function findBestAds()
     {
         return $this->createQueryBuilder('p')
             ->join('p.ad', 'a')
@@ -29,7 +29,7 @@ class PremiumRepository extends ServiceEntityRepository
             ->groupBy('a')
             ->addOrderBy('p.value', 'DESC')
             ->addOrderBy('p.startDate', 'DESC')
-            ->setMaxResults($limit)
+            //->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }

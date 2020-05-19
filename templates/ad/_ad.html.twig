@@ -1,4 +1,5 @@
 {% set url = path('ads_show', {'slug' : ad.slug}) %}
+    
 <div class="col-md-4 annonce">
     <div class="card bg-light md-3">
         <div class="card-header text-center">
@@ -8,6 +9,10 @@
             {% else %}
             <small>Pas encore noté</small>
             {% endif %}
+                {% if premium == 1 %}
+                    <h5><i class="fas fa-medal"></i> PREMIUM</h5>
+                {% endif %}
+                
         </div>
         <a href="{{ url }}">
             <img src="{{ ad.coverImage }}" alt="image de l'objet" style="height: 200px; width: 100%; display: block">

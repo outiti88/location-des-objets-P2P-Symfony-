@@ -21,10 +21,30 @@
 <div style="padding:20px;">
     <h2 style="text-align:center; color: firebrick;"><i class="fas fa-medal"></i> LES OBJETS PREMIUM</h2>
     <div class="row mt-5">
-      {% for ad in ads %}
+          {% set premium = 1 %}
+      {% for ad in ads_premium %}
         {% include 'ad/_ad.html.twig' %}
       {% endfor %}
     </div>
   </div>
+  <nav class="blog-pagination justify-content-center d-flex">
+
+    {{ knp_pagination_render(ads_premium) }}
+    </nav>
 </div>
+
+<div style="padding:20px;padding-top:60px">
+    <h2 style="text-align:center; color: firebrick;"><i class="fas fa-star"></i> LES OBJETS STARS</h2>
+    <div class="row mt-5">
+    {% set premium = 0 %}
+      {% for tab in ads %}
+        {% set ad = tab.annonce %}
+        {% include 'ad/_ad.html.twig'   %}
+      {% endfor %}
+    </div>
+ 
+  </div>
+  
+</div>
+
 {% endblock %}
