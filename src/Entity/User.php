@@ -84,6 +84,11 @@ class User implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\CommentClient", mappedBy="author", cascade={"persist", "remove"})
+     */
+    private $commentClient;
+
 
     function getFullName()
     {
@@ -357,5 +362,22 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->getFullName();
+    }
+
+    public function getCommentClient(): ?CommentClient
+    {
+        return $this->commentClient;
+    }
+
+    public function setCommentClient(CommentClient $commentClient): self
+    {
+        $this->commentClient = $commentClient;
+
+        // set the owning side of the relation if necessary
+        if ($commentClient->getAuthor() !== $this) {
+            $commentClient->setAuthor($this);
+        }
+
+        return $this;
     }
 }

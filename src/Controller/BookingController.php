@@ -8,6 +8,8 @@ use App\Entity\Booking;
 use App\Entity\Comment;
 use App\Form\BookingType;
 use App\Form\CommentType;
+use App\Entity\CommentClient;
+use App\Form\CommentClientType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -144,13 +146,36 @@ class BookingController extends AbstractController
      * 
      * @return Response
      */
-    function showDemande(Booking $booking)
+    function showDemande(Booking $booking, Request $request, EntityManagerInterface $manager)
 
     {
         if($this->getUser()==$booking->getAd()->getAuthor()){
+            $commentClient = new CommentClient;
+
+            $form = $this->createForm(CommentClientType::class, $commentClient);
+    
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                $commentClient->setBooking($booking)
+                    ->setAuthor($this->getUser())
+                    
+                    ->setCreatedAt(new \DateTime());
+    
+                $manager->persist($commentClient);
+                $manager->flush();
+    
+                $this->addFlash(
+                    "success",
+                    "Votre commentaire a bien été pris en compte !"
+                );
+
+                return $this->redirectToRoute("demande_show",array('id'=>$booking->getiD()));
+            }  
 
         return $this->render('booking/demande.html.twig', [
-            "booking" => $booking
+            "booking" => $booking,
+            'form' => $form->createView()
         ]);
     }
     else {

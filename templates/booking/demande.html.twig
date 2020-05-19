@@ -38,7 +38,7 @@
                             </div>
 
                             <div class="blog_details">
-                                <a class="d-inline-block" href="single-blog.html">
+                                <a class="d-inline-block" href="{{ path('user_show', {'slug' : booking.booker.slug}) }}">
                                     <h2>Reservation de: {{ booking.booker.getFullName() }}</h2>
                                 </a>
                                 <p>Réservation <strong>n°{{ booking.id }}</strong><br>
@@ -58,7 +58,38 @@
 
                     </div>
                 </div>
-    
+                 <div class="alert alert-light" id="comment">
+                    <h2 class="alert-heading">Votre avis compte !</h2>
+                        {% if booking.confirm == 0 %}
+                        <p>Vous ne pouvez pas commenter </p>
+                           <p>Cette reservation est en attente de confirmation </p>
+                           <p>Apres 24h de la date de reservation cette demannde sera automatiquement <strong style="color:red">ANNULEE</strong> </p>
+                          
+
+                        {% else %}
+
+                            {% if booking.endDate < date() %}
+                                {% if booking.commentClient is  null %}
+                                {{ form_start(form) }}
+                                    {{ form_widget(form)}}
+                                    <button type="submit" class="btn genric-btn danger-border">Confirmer</button>
+                                    {{ form_end(form) }}
+                                {% else %}
+                                    <blockquote>{{ booking.commentClient.getContent() |raw }}</blockquote> 
+
+                                    <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating': booking.commentClient.rating} %}
+                                {% endif %}
+                            {% else %}
+                                 <p>Vous pouvez pas commentez avant la fin de la location</p>
+                                 <p>Revenez apres le  {{booking.endDate | date('d/m/Y')}} pour donnez votre avis</p>
+                            
+                            {% endif %}
+                            
+                            
+                           
+                                    
+                        {% endif %}
+                </div>
     </div>
 
 {% endblock %}
