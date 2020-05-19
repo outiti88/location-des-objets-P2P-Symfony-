@@ -18,18 +18,28 @@
         <h1>Mes réservations</h1>
         <div class="alert alert-info mt-5">
             <p>Retrouvez ci-dessous toutes vos réservations passées et à venir</p>
+            <p>vous n'avez pas l'accée aux reservations qui sont Annulée</p>
         </div>
 
         {% for booking in app.user.bookings %}
 
-            {% if booking.confirm > -1 and  date(booking.createdAt) > date('-2days')  %}
+            {% if booking.confirm > -1 or  (date(booking.createdAt) > date('-1days') and booking.confirm == 0  )  %}
                 <div class="row mt-5">
                 <div class="col-4">
                     {% if booking.confirm == 0 %}
                         <h5>Reservation en attente de confirmation....</h5>
+                        <h6 style="color: red; text-align: center">Apres 24h sans reponse , la reservation sera annulée !!!</h6>
                     {% else %}
                         <h5>reservation a été confirméé par son proprietaire</h5>
+                        
+                        {% if booking.endDate < date()  %}
+                            <h6 style="color: red; text-align: center">Location terminée le {{ booking.endDate | date('d/m/Y') }} !!!</h6>
+                        {% else %}
+                            <h6 style="color: red; text-align: center">vous pouvez donnez votre avis apres {{ booking.endDate.diff( date('-1days') ).days }} Jour(s)</h6>
+                        {% endif %}
+
                     {% endif %}
+
                     <img src="{{ booking.ad.coverImage }}" alt="Photo de l'annonce {{ booking.ad.title }}" class="img-fluid">
 
                     <div class="mt-3">

@@ -28,7 +28,7 @@
 
         {% for booking in ads.bookings  %}
 
-            {% if booking.confirm > -1 and  date(booking.createdAt) > date('-2days')  %}
+            {% if booking.confirm > -1 or  (date(booking.createdAt) > date('-1days') and booking.confirm == 0  )   %}
 
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="blog_left_sidebar">
@@ -42,9 +42,29 @@
                             </div>
 
                             <div class="blog_details">
-                                <a class="d-inline-block" href="single-blog.html">
+                                <a class="d-inline-block" href="{{ path('user_show', {'slug' : booking.booker.slug}) }}">
                                     <h2>Reservation de: {{ booking.booker.getFullName() }}</h2>
                                 </a>
+                                 {% if booking.endDate < date()  %}
+                                    
+                                        <h4 style="color: red;">Location terminée le {{ booking.endDate | date('d/m/Y') }} :o </h4>
+                                        {% if booking.commentClient is  null %}
+                                         <p>Vous pouvez <a href="{{ path('demande_show' , {'id': booking.id}) }}">commenter et donner votre avis</a> sur le client <a href="{{ path('user_show', {'slug' : booking.booker.slug}) }}">{{booking.booker}} </a> </p> 
+                                        {% else %}
+                                        <h2>Commentaire: </h2>
+                                         <blockquote>{{ booking.commentClient.getContent() |raw }}</blockquote> 
+
+                                             <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating': booking.commentClient.rating} %}
+                                
+                                        {% endif %}
+                                        
+                                 {% else %}
+                                    {% if booking.confirm == 0 %}
+                                        <h4 style="color: red;">Demande en attente de votre reponse ;)</h4>
+                                    {% else %}
+                                        <h4 style="color: red;">Location est en cours! :)</h4>
+                                    {% endif %}
+                                 {% endif %}
                                 <p>Réservation <strong>n°{{ booking.id }}</strong><br>
                                     Du {{ booking.startDate | date('d/m/Y') }} au {{ booking.endDate | date('d/m/Y') }} ({{ booking.amount }}Dhs)</p>
                                 <ul class="blog-info-link">

@@ -65,6 +65,13 @@ class Booking
     private $confirm;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\CommentClient", mappedBy="booking", cascade={"persist", "remove"})
+     */
+    private $commentClient;
+
+
+
+    /**
      * Callback appelé à chaque fois qu'on crée une réservation
      *
      * @ORM\PrePersist
@@ -245,5 +252,22 @@ class Booking
 
     public function delete(){
         $this->setConfirm(-1);
+    }
+
+    public function getCommentClient(): ?CommentClient
+    {
+        return $this->commentClient;
+    }
+
+    public function setCommentClient(CommentClient $commentClient): self
+    {
+        $this->commentClient = $commentClient;
+
+        // set the owning side of the relation if necessary
+        if ($commentClient->getBooking() !== $this) {
+            $commentClient->setBooking($this);
+        }
+
+        return $this;
     }
 }

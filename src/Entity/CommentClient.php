@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass="App\Repository\CommentClientRepository")
  */
-class Comment
+class CommentClient
 {
     /**
      * @ORM\Id()
@@ -29,53 +29,33 @@ class Comment
      */
     private $rating;
 
-
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Ad", inversedBy="comments")
+     * @ORM\OneToOne(targetEntity="App\Entity\Booking", inversedBy="commentClient", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $ad;
+    private $booking;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="commentClient", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="commentClient", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $client;
+
+    /**
+     * @ORM\Column(type="text",nullable=true)
      */
     private $positiveComment;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text",nullable=true)
      */
     private $negativeComment;
-
-    private $content;
-    public function getContent(): ?string
-    {   
-        if(!$this->positiveComment)
-        return $this->positiveComment ;
-        else 
-        return $this->negativeComment;
-    }
-    
-
-
-    /**
-     * Permet de mettre en place une date de création
-     * 
-     * @ORM\PrePersist
-     *
-     * @return void
-     */
-    public function PrePersist()
-    {
-        if (empty($this->createdAt)) {
-            $this->createdAt = new \DateTime();
-        }
-    }
 
     public function getId(): ?int
     {
@@ -106,15 +86,14 @@ class Comment
         return $this;
     }
 
-
-    public function getAd(): ?Ad
+    public function getBooking(): ?Booking
     {
-        return $this->ad;
+        return $this->booking;
     }
 
-    public function setAd(?Ad $ad): self
+    public function setBooking(Booking $booking): self
     {
-        $this->ad = $ad;
+        $this->booking = $booking;
 
         return $this;
     }
@@ -124,9 +103,21 @@ class Comment
         return $this->author;
     }
 
-    public function setAuthor(?User $author): self
+    public function setAuthor(User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getClient(): ?User
+    {
+        return $this->client;
+    }
+
+    public function setClient(User $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }
@@ -136,9 +127,7 @@ class Comment
         return $this->positiveComment;
     }
 
-    
-
-    public function setPositiveComment(?string $positiveComment): self
+    public function setPositiveComment(string $positiveComment): self
     {
         $this->positiveComment = $positiveComment;
 
@@ -150,14 +139,16 @@ class Comment
         return $this->negativeComment;
     }
 
-    public function setNegativeComment(?string $negativeComment): self
+    public function setNegativeComment(string $negativeComment): self
     {
         $this->negativeComment = $negativeComment;
 
         return $this;
     }
 
-    /**
+   
+
+      /**
      * @Assert\Callback
      */
     public function validateFields(ExecutionContextInterface $context)
@@ -165,6 +156,18 @@ class Comment
         if ('' === $this->positiveComment && '' === $this->negativeComment) {
             $context->addViolation('Un commentaire positif ou bien négatif doit être ajouté');
         }
+    }
+    private $content;
+    public function getContent(): ?string
+    {   
+        if(!$this->positiveComment && !$this->negativeComment)
+        return "<strong>vous avez rien écrit</strong>";
+        if($this->positiveComment && $this->negativeComment)
+        return "<strong>Positive:</strong> ".$this->positiveComment."
+        </br>
+        <strong>negative:</strong> ".$this->negativeComment ;
+        else 
+        return $this->negativeComment?"<p> negative: ".$this->negativeComment."</p>":"<p> Positive: ".$this->positiveComment."</p>";
     }
 
     public function __toString(){
