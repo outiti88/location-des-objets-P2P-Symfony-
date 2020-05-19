@@ -41,11 +41,7 @@ class CommentClient
      */
     private $author;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="commentClient", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $client;
+  
 
     /**
      * @ORM\Column(type="text",nullable=true)
@@ -110,18 +106,7 @@ class CommentClient
         return $this;
     }
 
-    public function getClient(): ?User
-    {
-        return $this->client;
-    }
-
-    public function setClient(User $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
+   
     public function getPositiveComment(): ?string
     {
         return $this->positiveComment;

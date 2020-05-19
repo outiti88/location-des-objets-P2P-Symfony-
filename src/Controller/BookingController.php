@@ -159,7 +159,7 @@ class BookingController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $commentClient->setBooking($booking)
                     ->setAuthor($this->getUser())
-                    ->setClient($booking->getBooker())
+                    
                     ->setCreatedAt(new \DateTime());
     
                 $manager->persist($commentClient);
