@@ -32,15 +32,15 @@ class Booking
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\Date(message="Attention la date d'arrivée doit être au bon format")
-     * @Assert\GreaterThan("today", message="La date d'arrivée doit être ulterieure à la date d'aujourd'hui")
+     * @Assert\Date(message="Attention la date de debut doit être au bon format")
+     * @Assert\GreaterThan("tomorrow", message="La date de debut doit être ulterieure à la date d'aujourd'hui")
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\Date(message="Attention la date de départ doit être au bon format")
-     * @Assert\GreaterThan(propertyPath="startDate", message="La date de départ doit être plus éloignée de la date d'arrivée")
+     * @Assert\Date(message="Attention la date de remise doit être au bon format")
+     * @Assert\GreaterThan(propertyPath="startDate", message="La date de remise doit être plus éloignée de la date d'arrivée")
      */
     private $endDate;
 
@@ -239,11 +239,13 @@ class Booking
     }
 
     public function __toString()
-    {   $i=$this->id."";
+    {
+        $i = $this->id . "";
         return $i;
     }
 
-    public function delete(){
+    public function delete()
+    {
         $this->setConfirm(-1);
     }
 }

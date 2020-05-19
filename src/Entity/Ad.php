@@ -129,7 +129,7 @@ class Ad
         }
     }
 
-    
+
 
     /**
      * Permet de récuperer le commentaire d'un auteur par rapport à une annonce
@@ -172,20 +172,24 @@ class Ad
      */
     public function getNotAvailableDays()
     {
-        $notAvailableDays = [];
+        $notAvailableDays = []; //
 
         foreach ($this->bookings as $booking) {
-            //Calculer les jours qio existent entre la date d'arrivée et de départ
-            $resultat = range(
-                $booking->getStartDate()->getTimestamp(),
-                $booking->getEndDate()->getTimestamp(),
-                24 * 60 * 60
-            );
-            $days = array_map(function ($dayTimestamp) {
-                return new \DateTime(date('Y-m-d', $dayTimestamp));
-            }, $resultat);
+            if ($booking->getConfirm()) {
+                //Calculer les jours qio existent entre la date d'arrivée et de départ
+                $resultat = range(
+                    $booking->getStartDate()->getTimestamp(),
+                    $booking->getEndDate()->getTimestamp(),
+                    24 * 60 * 60
+                );
+                $days = array_map(function ($dayTimestamp) {
+                    return new \DateTime(date('Y-m-d', $dayTimestamp));
+                }, $resultat);
 
-            $notAvailableDays = array_merge($notAvailableDays, $days);
+                $notAvailableDays = array_merge($notAvailableDays, $days);
+            } else {
+                continue;
+            }
         }
 
         return $notAvailableDays;
