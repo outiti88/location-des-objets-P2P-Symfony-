@@ -58,10 +58,10 @@
                             </p>
 
                             {% if app.user and app.user == ad.author %}
-                            <a href="{{ path('ads_edit', {'slug': ad.slug }) }}" class="btn genric-btn primary">Modifier l'annonce</a>
-                            <a href="{{ path('ads_delete', {'slug': ad.slug }) }}" class="btn genric-btn danger" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer l'annonce : {{ ad.title }} ?`)">Supprimer l'annonce</a>
+                            <a href="{{ path('ads_edit', {'id': ad.id, 'slug': ad.slug }) }}" class="btn genric-btn primary">Modifier l'annonce</a>
+                            <a href="{{ path('ads_delete', {'id': ad.id, 'slug': ad.slug }) }}" class="btn genric-btn danger" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer l'annonce : {{ ad.title }} ?`)">Supprimer l'annonce</a>
                             {% else %}
-                            <a href="{{ path('booking_create', {'slug' : ad.slug }) }}" class="btn genric-btn danger"> Réserver</a>
+                            <a href="{{ path('booking_create', {'id': ad.id, 'slug' : ad.slug }) }}" class="btn genric-btn danger"> Réserver</a>
                             {% endif %}
                         </div>
                     </div>
@@ -141,12 +141,12 @@
             <div class="comment-list" style="padding-bottom:20px">
                 <div class="single-comment justify-content-between d-flex">
                     <div class="user justify-content-between d-flex">
-                        <div class="thumb" style="padding-right:10px"> <a href="{{path('user_show', {'slug': comment.author.slug})}}"> 
+                        <div class="thumb" style="padding-right:10px"> <a href="{{path('user_show', {'id': comment.author.id, 'slug': comment.author.slug})}}"> 
                             <img class="avatar avatar-medium" src="{{comment.author.picture}}" alt="">
                          </a>  </div>
                         <div class="desc">
                              <h5>
-                                <a href="{{path('user_show', {'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
+                                <a href="{{path('user_show', {'id': comment.author.id, 'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
                             </h5>
                             <p class="comment "> {{ comment.content | raw }} </p>
                              <div class="d-flex justify-content-between">
@@ -170,12 +170,12 @@
             {% set a = ad.author %}
             <div class="row">
                 <div class="col-3">
-                    <a href="{{path('user_show', {'slug': a.slug})}}">
+                    <a href="{{path('user_show', {'id': a.id, 'slug': a.slug})}}">
                         <img src="{{a.picture}}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}">
                     </a>
                 </div>
                 <div class="col">
-                    <a href="{{path('user_show', {'slug': a.slug})}}">
+                    <a href="{{path('user_show', {'id': a.id, 'slug': a.slug})}}">
                         <h3>{{a.fullName}}</h3>
                     </a>
                     <span class="badge badge-primary" style="background: #f44a40;">{{a.ads | length}} annonces</span>
@@ -204,25 +204,25 @@
             <div class="comment-list" style="padding-bottom:20px">
                 <div class="single-comment justify-content-between d-flex">
                     <div class="user justify-content-between d-flex">
-                        <div class="thumb" style="padding-right:10px"> <a href="{{path('user_show', {'slug': comment.author.slug})}}"> 
-                            <img class="avatar avatar-medium" src="{{comment.author.picture}}" alt="">
-                         </a>  </div>
+                        <div class="thumb" style="padding-right:10px"> 
+                            <a href="{{path('user_show', {'id': comment.author.id, 'slug': comment.author.slug})}}"> 
+                                <img class="avatar avatar-medium" src="{{comment.author.picture}}" alt="">
+                            </a>
+                        </div>
                         <div class="desc">
                              <h5>
-                                <a href="{{path('user_show', {'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
+                                <a href="{{path('user_show', {'id': comment.author.id, 'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
                             </h5>
                             <p class="comment masquer"> {{ comment.proContent | raw }} </p>
-                             <div class="d-flex justify-content-between">
-                                 <div class="d-flex align-items-center">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center">
                                     <p class="date"><strong>la note de </strong>
-                                     {% include 'partials/rating.html.twig' with {'rating': comment.rating } %}</p>
-                                 </div>
-
-                              </div>
+                                    {% include 'partials/rating.html.twig' with {'rating': comment.rating } %}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-               
             </div>
             {% endfor %}
              {% else %}

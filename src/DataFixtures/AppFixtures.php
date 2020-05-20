@@ -7,6 +7,7 @@ use App\Entity\Booking;
 use App\Entity\Category;
 use App\Entity\City;
 use App\Entity\Comment;
+use App\Entity\CommentClient;
 use Faker\Factory;
 use App\Entity\Role;
 use App\Entity\User;
@@ -193,12 +194,24 @@ class AppFixtures extends Fixture
                     ->setEndDate($endDate)
                     ->setCreatedAt($createdAt)
                     ->setComment($comment)
-                    ->setAmount($amount);
+                    ->setAmount($amount)
+                    ->setConfirm(mt_rand(-1, 1));
 
                 $manager->persist($booking);
 
-                //Gestion des commentaires
-                if (mt_rand(0, 1)) {
+                //Gestion du commentaire du propriétaire sur les clients
+
+                if ($booking->getConfirm()) {
+                    $commentClient = new CommentClient;
+                    $commentClient->setRating(mt_rand(1, 5))
+                        ->setPositiveComment($faker->paragraph())
+                        ->setNegativeComment($faker->paragraph())
+                        ->setBooking($booking)
+                        ->setAuthor($ad->getAuthor());
+                }
+
+                //Gestion des commentaires des clients sur l'annonce et le proprietaire
+                if ($booking->getConfirm()) {
                     $comment = new Comment;
                     $comment->setPositiveComment($faker->paragraph())
                         ->setNegativeComment($faker->paragraph())

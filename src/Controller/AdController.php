@@ -149,7 +149,7 @@ class AdController extends AbstractController
     /**
      * permet d'editer une annonce
      * 
-     * @Route("/ads/{slug}/edit", name="ads_edit")
+     * @Route("/ads/{id}/{slug}/edit", name="ads_edit")
      * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Cette annonce ne vous appartient pas, vous ne pouvez pas la modifier")
      *
      * @return Response
@@ -190,7 +190,7 @@ class AdController extends AbstractController
     /**
      * permet d'afficher une seule annonce
      *
-     * @Route("/ads/{slug}", name="ads_show")
+     * @Route("/ads/{id}/{slug}", name="ads_show")
      * 
      * @return Response
      */
@@ -204,7 +204,7 @@ class AdController extends AbstractController
     /**
      * Permet de supprimer une annonce
      * 
-     * @Route("/ads/{slug}/delete", name="ads_delete")
+     * @Route("/ads/{id}/{slug}/delete", name="ads_delete")
      * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Cette annonce ne vous appartient pas, vous ne pouvez pas la supprimer")
      *
      * @return Response

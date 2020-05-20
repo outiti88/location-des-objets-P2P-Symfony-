@@ -14,7 +14,6 @@
                                 Cette reservation a été confirméé par son proprietaire
                             {% else %}
                                 Cette reservation est en attente de confirmation par son proprietaire
-
                             {% endif %}
                         </h2>
                     </div>
@@ -34,9 +33,9 @@
                 <h4 class="alert-heading">Bravo !</h4>
                 <p>
                     Votre résevation auprés de 
-                    <strong><a href="{{ path('user_show', {'slug' : author.slug}) }}">{{ author.fullName }}</a></strong>
+                    <strong><a href="{{ path('user_show', {'id': author.id, 'slug' : author.slug}) }}">{{ author.fullName }}</a></strong>
                     pour l'annonce
-                    <strong><a href="{{ path('ads_show', {'slug' : ad.slug}) }}">{{ ad.title }}</a></strong>
+                    <strong><a href="{{ path('ads_show', {'id': ad.id, 'slug' : ad.slug}) }}">{{ ad.title }}</a></strong>
                     a bien été prise en compte !
                 </p>
             </div>
@@ -70,14 +69,14 @@
                         </div>
                         <div class="col">
                             <h4>
-                                <a href="{{ path('user_show', {'slug' : author.slug}) }}">{{ author.fullName }}</a>
+                                <a href="{{ path('user_show', {'id': author.id, 'slug' : author.slug}) }}">{{ author.fullName }}</a>
                             </h4>
                             <span class="badge badge-primary" style="background: #f44a40;">{{ author.ads|length }} annonces</span>
                         </div>
                     </div>
                     {{ author.description|raw }}
 
-                    <a href="{{ path('user_show', {'slug' : author.slug}) }}" class="btn genric-btn danger circle arrow">Plus d'infos sur {{ author.firstName }}</a>
+                    <a href="{{ path('user_show', {'id': author.id, 'slug' : author.slug}) }}" class="btn genric-btn danger circle arrow">Plus d'infos sur {{ author.firstName }}</a>
                 </div>
                 <div class="alert alert-light" id="comment">
                     <h2 class="alert-heading">Votre avis compte !</h2>
@@ -115,12 +114,12 @@
                     <h2 class="alert-heading">Votre article</h2>
 
                     <h4>
-                        <a href="{{ path('ads_show', {'slug' : ad.slug}) }}">{{ ad.title }}</a>
+                        <a href="{{ path('ads_show', {'id': ad.id, 'slug' : ad.slug}) }}">{{ ad.title }}</a>
                     </h4>
                     <img src="{{ ad.coverImage }}" alt="Image de {{ ad.title }}" class="img-fluid">
                     {{ ad.content | raw }}
 
-                    <a href="{{ path('ads_show', {'slug' : ad.slug}) }}" class="btn genric-btn danger circle arrow">Plus d'informations</a>
+                    <a href="{{ path('ads_show', {'id': ad.id, 'slug' : ad.slug}) }}" class="btn genric-btn danger circle arrow">Plus d'informations</a>
                 </div>
             </div>
         </div>

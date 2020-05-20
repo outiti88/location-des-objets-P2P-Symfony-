@@ -67,10 +67,12 @@
                 }
             {% endif %}
         {% endfor %}
-        const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
-        const mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(date)
-        const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date)
-        date = `${da}/${mo}/${ye}`;
+        if(typeof date !== 'undefined'){
+            const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
+            const mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(date)
+            const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date)
+            date = `${da}/${mo}/${ye}`;
+        }
         $('#booking_startDate').datepicker({
             format: 'dd/mm/yyyy',
             datesDisabled: [
@@ -80,16 +82,28 @@
             ],
             startDate: new Date((new Date()).valueOf() + 1000*3600*24)
         });
-        $('#booking_endDate').datepicker({
-            format: 'dd/mm/yyyy',
-            datesDisabled: [
-                {% for day in ad.notAvailableDays %}
-                    "{{ day.format('d/m/Y') }}",
-                {% endfor %}
-                date
-            ],
-            startDate: new Date((new Date()).valueOf() + 1000*3600*24*2)
-        });
+        if(typeof date !== 'undefined'){
+            $('#booking_endDate').datepicker({
+                format: 'dd/mm/yyyy',
+                datesDisabled: [
+                    {% for day in ad.notAvailableDays %}
+                        "{{ day.format('d/m/Y') }}",
+                    {% endfor %}
+                    date
+                ],
+                startDate: new Date((new Date()).valueOf() + 1000*3600*24*2)
+            });     
+        }else{
+            $('#booking_endDate').datepicker({
+                format: 'dd/mm/yyyy',
+                datesDisabled: [
+                    {% for day in ad.notAvailableDays %}
+                        "{{ day.format('d/m/Y') }}",
+                    {% endfor %}
+                ],
+                startDate: new Date((new Date()).valueOf() + 1000*3600*24*2)
+            }); 
+        }
         $('#booking_startDate, #booking_endDate').on('change', calculateAmount);
     })
     function calculateAmount() {

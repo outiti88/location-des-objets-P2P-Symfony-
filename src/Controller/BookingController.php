@@ -24,7 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BookingController extends AbstractController
 {
     /**
-     * @Route("/ads/{slug}/book", name="booking_create")
+     * @Route("/ads/{id}/{slug}/book", name="booking_create")
      * @IsGranted("ROLE_USER")
      */
     public function book(Ad $ad, Request $request, EntityManagerInterface $manager, MailerInterface $mailer)
