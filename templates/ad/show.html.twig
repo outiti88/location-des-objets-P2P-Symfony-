@@ -211,7 +211,7 @@
                              <h5>
                                 <a href="{{path('user_show', {'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
                             </h5>
-                            <p class="comment masquer"> {{ comment.content | raw }} </p>
+                            <p class="comment masquer"> {{ comment.proContent | raw }} </p>
                              <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
                                     <p class="date"><strong>la note de </strong>
@@ -226,7 +226,7 @@
             </div>
             {% endfor %}
              {% else %}
-            <h2>Cette annonce n'a pas encore reçu de commentaires</h2>
+            <h4>Ce proprietaire n'a pas encore reçu de commentaires</h4>
             {% endif %}
         </div>
         

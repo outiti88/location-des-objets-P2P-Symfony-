@@ -38,7 +38,22 @@ class CommentType extends ApplicationType
                 [
                     'required' => false
                 ]
-            ));
+            ))
+            ->add('proPositive', TextareaType::class, $this->getConfiguration(
+                "Votre avis / témoignage (positif)",
+                "N'hésitez pas à être trés précis, cela aidera nos futurs clients !",
+                [
+                    'required' => false
+                ]
+            ))
+            ->add('proNegative', TextareaType::class, $this->getConfiguration(
+                "Votre avis / témoignage (negatif)",
+                "N'hésitez pas à être trés précis, cela aidera nos futurs clients !",
+                [
+                    'required' => false
+                ]
+            ))
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
