@@ -86,4 +86,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 </div>
             </div>
         </div>
+        {% if app.user %}
+            <input type="hidden" id="userId" value="{{ app.user.id }}">
+        {% endif %}
     </footer>

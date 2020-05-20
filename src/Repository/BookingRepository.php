@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Booking;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,20 @@ class BookingRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Booking::class);
+    }
+
+    public function getDemandes(User $user)
+    {
+        $query = $this
+            ->createQueryBuilder('b')
+            ->innerJoin('b.ad', 'a')
+            ->andWhere('a.author = :author')
+            ->setParameter('author', $user)
+            ->andWhere('b.confirm = :confirm')
+            ->setParameter('confirm', false)
+            ->getQuery()
+            ->getResult();
+        return $query;
     }
 
     // /**

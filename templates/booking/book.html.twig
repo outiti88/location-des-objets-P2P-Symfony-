@@ -55,6 +55,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function(){
+        {% for day in ad.notAvailableDays %}
+            {% if loop.first %}
+                var date = new Date("{{ day.format('Y/m/d') }}");
+                date.setDate(date.getDate() + 1 );
+            {% else %}
+                var dateEnd = new Date("{{ day.format('Y/m/d') }}");
+                dateEnd.setDate(dateEnd.getDate() + 1 );
+                if(date < dateEnd){
+                    date = dateEnd;
+                }
+            {% endif %}
+        {% endfor %}
+        const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
+        const mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(date)
+        const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date)
+        date = `${da}/${mo}/${ye}`;
         $('#booking_startDate').datepicker({
             format: 'dd/mm/yyyy',
             datesDisabled: [
@@ -70,6 +86,7 @@
                 {% for day in ad.notAvailableDays %}
                     "{{ day.format('d/m/Y') }}",
                 {% endfor %}
+                date
             ],
             startDate: new Date((new Date()).valueOf() + 1000*3600*24*2)
         });

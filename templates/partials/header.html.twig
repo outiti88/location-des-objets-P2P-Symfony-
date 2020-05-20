@@ -16,7 +16,6 @@
                                     <nav>
                                         <ul id="navigation">
                                             <li><a class="active" href="{{ path('homepage') }}"><i class="fas fa-home" style="font-size:1em"></i> Acceuil</a></li>
-                                            
                                             <li><a href="#"><i class="far fa-newspaper" style="font-size:1em"></i> Annonces <i class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     <li><a href="{{ path('ads_index') }}"><i class="fas fa-eye" style="font-size:1em"></i> Voir Annonces</a></li>
@@ -36,6 +35,17 @@
                                 <div class="main-menu  d-none d-lg-block text-right">
                                     <ul>
                                         {% if app.user %}
+                                        <li>
+                                            <a href="#">
+                                                <span class="badge badge-danger ml-2" id="counter"></span>
+                                                <i class="fas fa-bell"></i>
+                                                <i class="ti-angle-down"></i>
+                                            </a>
+                                            <ul class="submenu" id="notifPrepend">
+                                                <div class="dropdown-divider"></div>
+                                                <li><a class="dropdown-item" href="#">Voir tout</a></li>
+                                            </ul>
+                                        </li>
                                         <li><a href="#"> <img src="{{app.user.picture}}" alt="Avatar de {{ app.user.fullName }}" class="avatar avatar-mini">
                                                 {{ app.user.fullName }} <i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
