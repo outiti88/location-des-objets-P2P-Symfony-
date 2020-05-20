@@ -53,12 +53,26 @@ class Comment
     private $negativeComment;
 
     private $content;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $proPositive;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $proNegative;
     public function getContent(): ?string
     {   
-        if(!$this->positiveComment)
-        return $this->positiveComment ;
+        if(!$this->positiveComment && !$this->negativeComment)
+        return "<b>vous avez rien écrit</b>";
+        if($this->positiveComment && $this->negativeComment)
+        return "<b>Positive:</b> ".$this->positiveComment."
+        </br>
+        <b>negative:</b> ".$this->negativeComment ;
         else 
-        return $this->negativeComment;
+        return $this->negativeComment?"<p> <b>negative:</b> ".$this->negativeComment."</p>":"<p> <b>Positive:</b>  ".$this->positiveComment."</p>";
     }
     
 
@@ -169,5 +183,29 @@ class Comment
 
     public function __toString(){
         return $this->getContent();
+    }
+
+    public function getProPositive(): ?string
+    {
+        return $this->proPositive;
+    }
+
+    public function setProPositive(?string $proPositive): self
+    {
+        $this->proPositive = $proPositive;
+
+        return $this;
+    }
+
+    public function getProNegative(): ?string
+    {
+        return $this->proNegative;
+    }
+
+    public function setProNegative(?string $proNegative): self
+    {
+        $this->proNegative = $proNegative;
+
+        return $this;
     }
 }

@@ -7,6 +7,13 @@
 
 {% block stylesheets %}
 <style>
+
+    .desc .masquer {
+        display:none;
+    }
+    .desc:hover .masquer {
+        display: block;
+    }
     .bg-image {
         /* The image used */
         background-image: url("photographer.jpg");
@@ -141,7 +148,7 @@
                              <h5>
                                 <a href="{{path('user_show', {'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
                             </h5>
-                            <p class="comment"> {{ comment.content }} </p>
+                            <p class="comment "> {{ comment.content | raw }} </p>
                              <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
                                     <p class="date"><strong>la note de </strong>
@@ -174,8 +181,55 @@
                     <span class="badge badge-primary" style="background: #f44a40;">{{a.ads | length}} annonces</span>
                 </div>
             </div>
-            {{a.description | raw}}
+            {{a.introduction | raw}}
+            {% if ad.comments | length > 0 %}
+            <h2 class="mb-3">Commentaires :</h2>
+            <div class="alert alert-info">
+                <h4 class="alert-heading text-center">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            Note globale donnée par nos clients
+                        </div>
+                        <div class="col">
+                            {% include 'partials/rating.html.twig' with {'rating': ad.avgRatings } %}
+                            <br>
+                            <small >(calculée sur {{ ad.comments | length }} avis)</small>
+                        </div>
+                    </div>
+                </h4>
+            </div>
+
+               {% for comment in ad.comments %}
+
+            <div class="comment-list" style="padding-bottom:20px">
+                <div class="single-comment justify-content-between d-flex">
+                    <div class="user justify-content-between d-flex">
+                        <div class="thumb" style="padding-right:10px"> <a href="{{path('user_show', {'slug': comment.author.slug})}}"> 
+                            <img class="avatar avatar-medium" src="{{comment.author.picture}}" alt="">
+                         </a>  </div>
+                        <div class="desc">
+                             <h5>
+                                <a href="{{path('user_show', {'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} :  </a>
+                            </h5>
+                            <p class="comment masquer"> {{ comment.content | raw }} </p>
+                             <div class="d-flex justify-content-between">
+                                 <div class="d-flex align-items-center">
+                                    <p class="date"><strong>la note de </strong>
+                                     {% include 'partials/rating.html.twig' with {'rating': comment.rating } %}</p>
+                                 </div>
+
+                              </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            {% endfor %}
+             {% else %}
+            <h2>Cette annonce n'a pas encore reçu de commentaires</h2>
+            {% endif %}
         </div>
+        
     </div>
 </div>
 {% endblock %}
