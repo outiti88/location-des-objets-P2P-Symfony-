@@ -2,6 +2,7 @@
 
 {% block title %}Réservation n°{{ booking.id }}{% endblock %}
 
+
 {% block body %}
             <div class="bradcam_area breadcam_bg_2">
         <div class="container">
@@ -93,13 +94,24 @@
                                     <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating': comment.rating} %}
                                 {% else %}
                                     {{ form_start(form) }}
-                                    {{form_row(form.rating) }}
-                                    <h3>Commentaire pour l'article que vous avez loué: </3>
-                                    {{form_row(form.positiveComment) }}
-                                    {{form_row(form.negativeComment) }}
-                                    <h3>Commentaire pour le Proprietaire de l'objet: </3>
-                                    {{ form_widget(form)}}
-                                    <button type="submit" class="btn genric-btn danger-border">Confirmer</button>
+                                    <div  style="padding-bottom:20px;">
+                                        {{ form_widget(form.rating, {'attr': {'id': 'rating', 'oninput':'rating()'}}) }}
+                                    </div>
+                                    {{ form_widget(form.rating, {'attr': {'class': 'task_field'}}) }}
+                                    <div style="padding-bottom:20px;">
+                                        <a style="width:100%" class="btn genric-btn danger-border   arrow" onclick="article()">Commentaire pour l'article  loué: </a> <br>
+                                        <div id="article" style="display:none;">
+                                            {{form_row(form.positiveComment) }}
+                                            {{form_row(form.negativeComment) }}
+                                         </div>
+                                    </div>
+                                   <div style="padding-bottom:20px;">
+                                     <a style="width:100%" class="btn genric-btn danger-border  arrow" onclick="proprietaire()">Commentaire pour le Proprietaire de l'objet: </a>
+                                        <div id="proprietaire" style="display:none;">
+                                            {{ form_widget(form)}}
+                                        </div>
+                                   </div>
+                                    <button type="submit" style="width:100%" class="btn genric-btn danger">Confirmer</button>
                                     {{ form_end(form) }}
                                 {% endif %}
                             {% else %}
@@ -125,4 +137,27 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+     <script>
+        function proprietaire() {
+        var x = document.getElementById("proprietaire");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+        }
+        
+        function article() {
+        var x = document.getElementById("article");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+        }
+        
+     </script>
 {% endblock %}
