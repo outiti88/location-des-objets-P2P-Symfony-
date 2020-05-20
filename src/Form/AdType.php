@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use App\Form\DataTransformer\FrenchToDateTimeTransformer;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -18,9 +19,16 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class AdType extends ApplicationType
 {
+    private $transformer;
+
+    public function __construct(FrenchToDateTimeTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
 
         $builder
             ->add(
@@ -51,6 +59,18 @@ class AdType extends ApplicationType
                 'price',
                 MoneyType::class,
                 $this->getConfiguration("Prix par jour", "Indiquez le prix que vous voulez pour un jour")
+            )
+
+            ->add(
+                'dateDebut',
+                TextType::class,
+                $this->getConfiguration("Date de disponibilité", "La date à laquelle votre bien sera disponible")
+            )
+
+            ->add(
+                'dateFin',
+                TextType::class,
+                $this->getConfiguration("Date de fin de disponibilité", "La date à laquelle votre bien ne sera plus disponible")
             )
 
             ->add(
@@ -108,6 +128,9 @@ class AdType extends ApplicationType
                     '1 mois' => 30,
                 )
             ));
+
+        $builder->get('dateDebut')->addModelTransformer($this->transformer);
+        $builder->get('dateFin')->addModelTransformer($this->transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

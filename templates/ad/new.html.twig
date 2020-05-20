@@ -31,8 +31,20 @@
 {% endblock %}
 
 {% block javascripts %}
-
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/js1/ad.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        $('#ad_dateDebut').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: new Date((new Date()).valueOf() + 1000*3600*24)
+        });
+        $('#ad_dateFin').datepicker({
+            format: 'dd/mm/yyyy',
+            startDate: new Date((new Date()).valueOf() + 1000*3600*24*2)
+        });
+    });
+</script>
 
 {% endblock %}

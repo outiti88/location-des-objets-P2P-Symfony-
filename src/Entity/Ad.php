@@ -104,6 +104,16 @@ class Ad
      */
     private $blackListed;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateDebut;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateFin;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -172,7 +182,7 @@ class Ad
      */
     public function getNotAvailableDays()
     {
-        $notAvailableDays = []; //
+        $notAvailableDays = [];
 
         foreach ($this->bookings as $booking) {
             if ($booking->getConfirm()) {
@@ -454,5 +464,29 @@ class Ad
     public function __toString()
     {
         return $this->title;
+    }
+
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(\DateTimeInterface $dateDebut): self
+    {
+        $this->dateDebut = $dateDebut;
+
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(?\DateTimeInterface $dateFin): self
+    {
+        $this->dateFin = $dateFin;
+
+        return $this;
     }
 }

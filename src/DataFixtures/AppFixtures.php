@@ -123,9 +123,12 @@ class AppFixtures extends Fixture
             $coverImage = "https://picsum.photos/1950/550?random=" . mt_rand(1, 55000);
             $introduction = $faker->paragraph(2);
             $content    = '<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>';
-
             $user = $users[mt_rand(0, count($users) - 1)];
             $subCategory = $subCategoryObjects[mt_rand(0, count($subCategoryObjects) - 1)];
+            $createdAt = $faker->dateTimeBetween('-6 months');
+            $startDate = $faker->dateTimeBetween($createdAt);
+            $duration = mt_rand(1, 365);
+            $endDate = (clone $startDate)->modify("+$duration days");
 
             $ad = new Ad;
             $ad->setTitle($title)
@@ -137,7 +140,9 @@ class AppFixtures extends Fixture
                 ->setSubCategory($subCategory)
                 ->setBlackListed(false)
                 ->addCity($cityObjects[0])
-                ->addCity($cityObjects[mt_rand(1, count($cityObjects) - 1)]);
+                ->addCity($cityObjects[mt_rand(1, count($cityObjects) - 1)])
+                ->setDateDebut($startDate)
+                ->setDateFin($endDate);
 
             //Nous gérons les annonces premium
             $premium = new Premium;
