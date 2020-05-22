@@ -34,14 +34,18 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention la date de debut doit être au bon format")
-     * @Assert\GreaterThan("tomorrow", message="La date de debut doit être ulterieure à la date d'aujourd'hui")
+     * @Assert\GreaterThan("today", message="La date de debut doit être ulterieure à la date d'aujourd'hui")
+     * @Assert\GreaterThanOrEqual(propertyPath="ad.dateDebut", message="La date de debut doit être ulterieure à la date de debut de disponibilité de l'annonce")
+     * @Assert\LessThan(propertyPath="ad.dateFin", message="La date de debut doit être antérieure à la date de fin de disponibilité de l'annonce")
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention la date de remise doit être au bon format")
-     * @Assert\GreaterThan(propertyPath="startDate", message="La date de remise doit être plus éloignée de la date d'arrivée")
+     * @Assert\GreaterThan(propertyPath="startDate", message="La date de remise doit être plus éloignée de la date de début")
+     * @Assert\GreaterThan(propertyPath="ad.dateDebut", message="La date de remise doit être ulterieure à la date de debut de disponibilité de l'annonce")
+     * @Assert\LessThanOrEqual(propertyPath="ad.dateFin", message="La date de remise doit être antérieure à la date de fin de disponibilité de l'annonce")
      */
     private $endDate;
 

@@ -18,9 +18,9 @@ class HomeController extends AbstractController
      *
      * @Route("/", name = "homepage")
      */
-    function home(PaginatorInterface $paginator,AdRepository $adRepo, PremiumRepository $premiumRepo,Request $request)
+    function home(PaginatorInterface $paginator, AdRepository $adRepo, PremiumRepository $premiumRepo, Request $request)
     {
-        $premiums = $premiumRepo->findBestAds();
+        $premiums = $premiumRepo->findPremium();
         $ads_premium = array();
         foreach ($premiums as $premium) {
             $ads_premium[] = $premium->getAd();
@@ -28,7 +28,7 @@ class HomeController extends AbstractController
         $ads_premium = $paginator->paginate(
             $ads_premium,
             $request->query->getInt('page', 1),
-            6 //nombre d'annoces
+            3 //nombre d'annoces
         );
         //dd($adRepo->findBestAds(3));
         return $this->render('home.html.twig', [

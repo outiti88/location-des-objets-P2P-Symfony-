@@ -37,7 +37,11 @@ class AdController extends AbstractController
         $premiums = $premiumRepository->findFilter($filter);
         $ads = array();
         foreach ($premiums as $premium) {
-            $ads[] = $premium->getAd();
+            $ad = $premium->getAd();
+            if ($premium->getValue()) {
+                $ad->setPremiumValue(true);
+            }
+            $ads[] = $ad;
         }
         foreach ($ads as $ad) {
             $dates = $ad->getNotAvailableDays();

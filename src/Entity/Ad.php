@@ -106,11 +106,15 @@ class Ad
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Date(message="Attention la date de debut doit être au bon format")
+     * @Assert\GreaterThan("today", message="La date de debut de disponibilité doit être ulterieure à la date d'aujourd'hui")
      */
     private $dateDebut;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\Date(message="Attention la date de fin de disponibilité doit être au bon format")
+     * @Assert\GreaterThan(propertyPath="dateDebut", message="La date de fin de disponibilité doit être plus éloignée de la date de début")
      */
     private $dateFin;
 

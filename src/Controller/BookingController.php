@@ -30,6 +30,7 @@ class BookingController extends AbstractController
     public function book(Ad $ad, Request $request, EntityManagerInterface $manager, MailerInterface $mailer)
     {
         $booking = new Booking;
+        $booking->setAd($ad);
         $form = $this->createForm(BookingType::class, $booking);
 
         $form->handleRequest($request);

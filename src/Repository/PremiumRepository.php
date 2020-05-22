@@ -34,6 +34,20 @@ class PremiumRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findPremium()
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.ad', 'a')
+            ->andWhere('a.blackListed = :blackListed')
+            ->setParameter('blackListed', false)
+            ->groupBy('a')
+            ->andWhere('p.value = :value')
+            ->setParameter('value', true)
+            ->orderBy('p.startDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findFilter(Filter $filter)
     {
         $bol = 0;
