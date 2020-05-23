@@ -85,9 +85,10 @@ class User implements UserInterface
     private $comments;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\CommentClient", mappedBy="author", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\CommentClient", mappedBy="author", orphanRemoval=true)
      */
-    private $commentClient;
+    private $commentClients;
+
 
 
     function getFullName()
@@ -114,6 +115,7 @@ class User implements UserInterface
         $this->ads = new ArrayCollection();
         $this->bookings = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->commentClients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -364,18 +366,32 @@ class User implements UserInterface
         return $this->getFullName();
     }
 
-    public function getCommentClient(): ?CommentClient
+    /**
+     * @return Collection|CommentClient[]
+     */
+    public function getCommentClients(): Collection
     {
-        return $this->commentClient;
+        return $this->commentClients;
     }
 
-    public function setCommentClient(CommentClient $commentClient): self
+    public function addCommentClient(CommentClient $commentClient): self
     {
-        $this->commentClient = $commentClient;
-
-        // set the owning side of the relation if necessary
-        if ($commentClient->getAuthor() !== $this) {
+        if (!$this->commentClients->contains($commentClient)) {
+            $this->commentClients[] = $commentClient;
             $commentClient->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentClient(CommentClient $commentClient): self
+    {
+        if ($this->commentClients->contains($commentClient)) {
+            $this->commentClients->removeElement($commentClient);
+            // set the owning side to null (unless already changed)
+            if ($commentClient->getAuthor() === $this) {
+                $commentClient->setAuthor(null);
+            }
         }
 
         return $this;

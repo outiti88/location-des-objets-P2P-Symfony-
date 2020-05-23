@@ -125,9 +125,9 @@ class AppFixtures extends Fixture
             $content    = '<p>' . join('</p><p>', $faker->paragraphs(5)) . '</p>';
             $user = $users[mt_rand(0, count($users) - 1)];
             $subCategory = $subCategoryObjects[mt_rand(0, count($subCategoryObjects) - 1)];
-            $createdAt = $faker->dateTimeBetween('-6 months');
+            $createdAt = $faker->dateTimeBetween('-2 months');
             $startDate = $faker->dateTimeBetween($createdAt);
-            $duration = mt_rand(1, 365);
+            $duration = mt_rand(31, 365);
             $endDate = (clone $startDate)->modify("+$duration days");
 
             $ad = new Ad;
@@ -138,11 +138,15 @@ class AppFixtures extends Fixture
                 ->setPrice(mt_rand(40, 200))
                 ->setAuthor($user)
                 ->setSubCategory($subCategory)
-                ->setBlackListed(false)
                 ->addCity($cityObjects[0])
                 ->addCity($cityObjects[mt_rand(1, count($cityObjects) - 1)])
                 ->setDateDebut($startDate)
                 ->setDateFin($endDate);
+            if ($endDate < new \DateTime()) {
+                $ad->setBlackListed(true);
+            } else {
+                $ad->setBlackListed(false);
+            }
 
             //Nous gérons les annonces premium
             $premium = new Premium;
@@ -150,11 +154,11 @@ class AppFixtures extends Fixture
 
             if ($value) {
                 $durationPremium = array(7, 15, 30);
-                $startDate = new \DateTime();
-                $endDate = (clone $startDate)->modify('+' . $durationPremium[mt_rand(0, 2)] . ' days');
+                $startDatePremium = $createdAt;
+                $endDatePremium = (clone $startDatePremium)->modify('+' . $durationPremium[mt_rand(0, 2)] . ' days');
                 $premium->setValue($value)
-                    ->setStartDate($startDate)
-                    ->setEndDate($endDate)
+                    ->setStartDate($startDatePremium)
+                    ->setEndDate($endDatePremium)
                     ->setAd($ad);
 
                 $manager->persist($premium);
@@ -182,22 +186,25 @@ class AppFixtures extends Fixture
             for ($j = 1; $j <= mt_rand(0, 10); $j++) {
                 $booking = new Booking;
 
-                $createdAt = $faker->dateTimeBetween('-6 months');
-                $startDate = $faker->dateTimeBetween($createdAt);
+                $createdAtBooking = $faker->dateTimeBetween($startDate);
+                $startDateBooking = $faker->dateTimeBetween($createdAtBooking);
 
-                $duration = mt_rand(3, 10);
-                $endDate = (clone $startDate)->modify("+$duration days");
+                $durationBooking = mt_rand(3, 10);
+                $endDateBooking = (clone $startDateBooking)->modify("+$durationBooking days");
 
-                $amount = $ad->getPrice() * $duration;
+                $amount = $ad->getPrice() * $durationBooking;
                 $booker = $users[mt_rand(0, count($users) - 1)];
+                while ($booker === $user) {
+                    $booker = $users[mt_rand(0, count($users) - 1)];
+                }
 
                 $comment = $faker->paragraph();
 
                 $booking->setBooker($booker)
                     ->setAd($ad)
-                    ->setStartDate($startDate)
-                    ->setEndDate($endDate)
-                    ->setCreatedAt($createdAt)
+                    ->setStartDate($startDateBooking)
+                    ->setEndDate($endDateBooking)
+                    ->setCreatedAt($createdAtBooking)
                     ->setComment($comment)
                     ->setAmount($amount)
                     ->setConfirm(mt_rand(-1, 1));
@@ -211,8 +218,10 @@ class AppFixtures extends Fixture
                     $commentClient->setRating(mt_rand(1, 5))
                         ->setPositiveComment($faker->paragraph())
                         ->setNegativeComment($faker->paragraph())
+                        ->setCreatedAt($endDateBooking)
                         ->setBooking($booking)
                         ->setAuthor($ad->getAuthor());
+                    $manager->persist($commentClient);
                 }
 
                 //Gestion des commentaires des clients sur l'annonce et le proprietaire
@@ -220,6 +229,8 @@ class AppFixtures extends Fixture
                     $comment = new Comment;
                     $comment->setPositiveComment($faker->paragraph())
                         ->setNegativeComment($faker->paragraph())
+                        ->setProNegative($faker->paragraph())
+                        ->setProPositive($faker->paragraph())
                         ->setRating(mt_rand(1, 5))
                         ->setAuthor($booker)
                         ->setAd($ad);

@@ -36,12 +36,10 @@ class CommentClient
     private $booking;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="commentClient", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="commentClients")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
-
-  
 
     /**
      * @ORM\Column(type="text",nullable=true)
@@ -94,19 +92,7 @@ class CommentClient
         return $this;
     }
 
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
 
-    public function setAuthor(User $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-   
     public function getPositiveComment(): ?string
     {
         return $this->positiveComment;
@@ -131,9 +117,9 @@ class CommentClient
         return $this;
     }
 
-   
 
-      /**
+
+    /**
      * @Assert\Callback
      */
     public function validateFields(ExecutionContextInterface $context)
@@ -143,19 +129,34 @@ class CommentClient
         }
     }
     private $content;
+
+
     public function getContent(): ?string
-    {   
-        if(!$this->positiveComment && !$this->negativeComment)
-        return "<strong>vous avez rien écrit</strong>";
-        if($this->positiveComment && $this->negativeComment)
-        return "<strong>Positive:</strong> ".$this->positiveComment."
+    {
+        if (!$this->positiveComment && !$this->negativeComment)
+            return "<strong>vous avez rien écrit</strong>";
+        if ($this->positiveComment && $this->negativeComment)
+            return "<strong>Positive:</strong> " . $this->positiveComment . "
         </br>
-        <strong>negative:</strong> ".$this->negativeComment ;
-        else 
-        return $this->negativeComment?"<p> negative: ".$this->negativeComment."</p>":"<p> Positive: ".$this->positiveComment."</p>";
+        <strong>negative:</strong> " . $this->negativeComment;
+        else
+            return $this->negativeComment ? "<p> negative: " . $this->negativeComment . "</p>" : "<p> Positive: " . $this->positiveComment . "</p>";
     }
 
-    public function __toString(){
+    public function __toString()
+    {
         return $this->getContent();
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
     }
 }

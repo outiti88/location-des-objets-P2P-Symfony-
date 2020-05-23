@@ -26,6 +26,8 @@ class PremiumRepository extends ServiceEntityRepository
             ->join('p.ad', 'a')
             ->andWhere('a.blackListed = :blackListed')
             ->setParameter('blackListed', false)
+            ->andWhere('a.dateFin > :dateNow')
+            ->setParameter('dateNow', new \DateTime())
             ->groupBy('a')
             ->addOrderBy('p.value', 'DESC')
             ->addOrderBy('p.startDate', 'DESC')
@@ -43,6 +45,8 @@ class PremiumRepository extends ServiceEntityRepository
             ->groupBy('a')
             ->andWhere('p.value = :value')
             ->setParameter('value', true)
+            ->andWhere('a.dateFin > :dateNow')
+            ->setParameter('dateNow', new \DateTime())
             ->orderBy('p.startDate', 'DESC')
             ->getQuery()
             ->getResult();
@@ -52,7 +56,7 @@ class PremiumRepository extends ServiceEntityRepository
     {
         $bol = 0;
 
-        if ($filter->getEndPrice() || $filter->getStartPrice() || $filter->getCity()) {
+        if ($filter->getEndPrice() || $filter->getStartPrice() || $filter->getCity() || $filter->getSubCategory() || $filter->getStartDate() || $filter->getEndDate()) {
             $query = $this
                 ->createQueryBuilder('p')
                 ->innerJoin('p.ad', 'a')
@@ -89,6 +93,16 @@ class PremiumRepository extends ServiceEntityRepository
                     $query = $query->setParameter(':categoryTitle', $filter->getCategory());
                 }
             }
+            if ($filter->getStartDate()) {
+                $query = $query
+                    ->andWhere('a.dateDebut <= :startDate')
+                    ->setParameter('startDate', \DateTime::createFromFormat('d/m/Y', $filter->getStartDate()));
+            }
+            if ($filter->getEndDate()) {
+                $query = $query
+                    ->andWhere('a.dateFin >= :endDate')
+                    ->setParameter('endDate', \DateTime::createFromFormat('d/m/Y', $filter->getEndDate()));
+            }
 
             $query = $query->getQuery();
         }
@@ -100,6 +114,8 @@ class PremiumRepository extends ServiceEntityRepository
                 ->createQueryBuilder('p')
                 ->join('p.ad', 'a')
                 ->andWhere('a.blackListed = :blackListed')
+                ->andWhere('a.dateFin > :dateNow')
+                ->setParameter('dateNow', new \DateTime())
                 ->setParameter('blackListed', false)
                 ->groupBy('a')
                 ->addOrderBy('p.value', 'DESC')
