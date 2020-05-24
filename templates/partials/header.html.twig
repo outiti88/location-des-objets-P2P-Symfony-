@@ -37,6 +37,18 @@
                                     {% if app.user %}
                                     <li>
                                         <a href="#">
+                                            <span class="badge badge-danger ml-2" id="counterMessage"></span>
+                                            <i class="fas fa-comment-dots"></i>
+                                            <i class="ti-angle-down"></i>
+                                        </a>
+                                        <ul class="submenu" id="messagePrepend" style="
+                                                    width :250px; max-height:350px; overflow: auto; ">
+                                            <div class="dropdown-divider"></div>
+                                            <li><a class="dropdown-item" href="#">Voir tout</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">
                                             <span class="badge badge-danger ml-2" id="counter"></span>
                                             <i class="fas fa-bell"></i>
                                             <i class="ti-angle-down"></i>

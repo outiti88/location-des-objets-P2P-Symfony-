@@ -30,7 +30,7 @@
                         <h5>Reservation en attente de confirmation....</h5>
                         <h6 style="color: red; text-align: center">Apres 24h sans reponse , la reservation sera annulée !!!</h6>
                     {% else %}
-                        <h5>reservation a été confirméé par son proprietaire</h5>
+                        <h5>reservation confirméé par son proprietaire</h5>
                         
                         {% if booking.endDate < date()  %}
                             <h6 style="color: red; text-align: center">Location terminée le {{ booking.endDate | date('d/m/Y') }} !!!</h6>
