@@ -41,7 +41,8 @@ class BookingController extends AbstractController
             $booking->setBooker($user)
                 ->setAd($ad)
                 ->setVuNotifClient(false)
-                ->setVuNotifProp(false);
+                ->setVuNotifProp(false)
+                ->setVuNotifConfirm(false);
 
             if (!$booking->isBookable()) {
                 $this->addFlash(
@@ -123,6 +124,27 @@ class BookingController extends AbstractController
     }
 
     /**
+     * Permet de communiquer les reservations términées et prêtes pour commenter au booker
+     *
+     * @Route("/booking/notifConfirm", name="booking_notifConfirm")
+     * @return json
+     */
+    public function showNotifConfirm(Request $request, BookingRepository $bookingRepository, UserRepository $userRepository)
+    {
+        $postData = json_decode($request->getContent());
+        $userId = $postData->userId;
+        $user = $userRepository->findOneById($userId);
+        $bookings = $bookingRepository->getNotifConfirm($user);
+        foreach ($bookings as $booking) {
+            $bookingArray[] = [
+                'id' => $booking->getId(),
+                'title' => $booking->getAd()->getTitle()
+            ];
+        }
+        return $this->json($bookingArray, 200);
+    }
+
+    /**
      * Permet de communiquer les reservations términées et prêtes pour commenter a l'auteur
      *
      * @Route("/booking/notifAuthor", name="booking_notifAuthor")
@@ -154,6 +176,53 @@ class BookingController extends AbstractController
     public function show(Booking $booking, Request $request, EntityManagerInterface $manager)
     {
         if ($this->getUser() == $booking->getBooker()) {
+            $comment = new Comment;
+
+            $form = $this->createForm(CommentType::class, $comment);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $comment->setAd($booking->getAd())
+                    ->setAuthor($this->getUser());
+
+                $manager->persist($comment);
+                $booking->setVuNotifClient(true);
+                $manager->persist($booking);
+                $manager->flush();
+
+                $this->addFlash(
+                    "success",
+                    "Votre commentaire a bien été pris en compte !"
+                );
+            }
+
+            return $this->render('booking/show.html.twig', [
+                'booking' => $booking,
+                'form' => $form->createView()
+            ]);
+        } else {
+
+            return $this->redirectToRoute("account_bookings");
+        }
+    }
+
+    /**
+     * Permet d'afficher la page d'une reservation depuis une notification de confirmation de reservation
+     *
+     * @Route("/booking/confirm/{id}", name="booking_show_confirm")
+     * 
+     * @param Booking $booking
+     * @return Response
+     */
+    public function showConfirm(Booking $booking, Request $request, EntityManagerInterface $manager)
+    {
+        if ($this->getUser() == $booking->getBooker()) {
+
+            $booking->setVuNotifConfirm(true);
+            $manager->persist($booking);
+            $manager->flush();
+
             $comment = new Comment;
 
             $form = $this->createForm(CommentType::class, $comment);

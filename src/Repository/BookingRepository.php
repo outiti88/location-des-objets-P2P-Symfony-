@@ -52,6 +52,22 @@ class BookingRepository extends ServiceEntityRepository
         return $query;
     }
 
+    public function getNotifConfirm(User $user)
+    {
+        $query = $this
+            ->createQueryBuilder('b')
+            ->innerJoin('b.ad', 'a')
+            ->andWhere('b.booker = :booker')
+            ->setParameter('booker', $user)
+            ->andWhere('b.confirm = :confirm')
+            ->setParameter('confirm', true)
+            ->andWhere('b.vuNotifConfirm = :vuNotifConfirm')
+            ->setParameter('vuNotifConfirm', false)
+            ->getQuery()
+            ->getResult();
+        return $query;
+    }
+
     public function getNotifAuthor(User $user)
     {
         $query = $this

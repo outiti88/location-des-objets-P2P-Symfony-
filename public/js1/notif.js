@@ -51,6 +51,24 @@ function showNotif(Ids, counter) {
         }).catch(function (error) {
             console.log(error);
         });
+
+    const urlConfirm = "/booking/notifConfirm";
+    axios.post(urlConfirm, {
+            userId: userId
+        })
+        .then(function (response) {
+            $.each(response.data, function (key, value) {
+                if ($.inArray(value.id, Ids) === -1) {
+                    $('#notifPrepend').prepend("<li><a class='dropdown-item' href='/booking/confirm/" + value.id + "'><h6>Votre reservation pour l'article <strong>" + value.title + "</strong> a été confirmée</h6></a></li>");
+                    counter += 1;
+                    Ids.push(value.id);
+                    $('#counter').html(counter);
+                }
+
+            });
+        }).catch(function (error) {
+            console.log(error);
+        });
 }
 
 $(document).ready(function () {

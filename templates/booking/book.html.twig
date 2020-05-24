@@ -78,9 +78,9 @@
             var endDate = "{{ ad.dateFin.format('Y/m/d') }}";
             startDate = new Date(startDate);
             endDate = new Date(endDate);
-            endDateInf = new Date();
+            endDateInf = new Date("{{ ad.dateFin.format('Y/m/d') }}");
             startDateSup = new Date();
-            endDateInf.setDate(endDate.getDate() - 1);
+            endDateInf.setDate(endDateInf.getDate() - 1);
             startDateSup.setDate(startDate.getDate() + 1);
             if(startDate > new Date((new Date()).valueOf() + 1000*3600*24)){
                 $('#booking_startDate').datepicker({

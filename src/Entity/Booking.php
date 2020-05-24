@@ -84,7 +84,10 @@ class Booking
      */
     private $vuNotifProp;
 
-
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $vuNotifConfirm;
 
 
     /**
@@ -309,6 +312,18 @@ class Booking
     public function setVuNotifProp(bool $vuNotifProp): self
     {
         $this->vuNotifProp = $vuNotifProp;
+
+        return $this;
+    }
+
+    public function getVuNotifConfirm(): ?bool
+    {
+        return $this->vuNotifConfirm;
+    }
+
+    public function setVuNotifConfirm(bool $vuNotifConfirm): self
+    {
+        $this->vuNotifConfirm = $vuNotifConfirm;
 
         return $this;
     }

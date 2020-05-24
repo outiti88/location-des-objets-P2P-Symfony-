@@ -209,13 +209,15 @@ class AppFixtures extends Fixture
                     ->setAmount($amount)
                     ->setVuNotifProp(false)
                     ->setVuNotifClient(false)
+                    ->setVuNotifConfirm(false)
                     ->setConfirm(mt_rand(-1, 1));
 
 
 
                 if ($booking->getEndDate() < new \DateTime() && $booking->getConfirm() == 1) {
                     $booking->setVuNotifProp(true)
-                        ->setVuNotifClient(true);
+                        ->setVuNotifClient(true)
+                        ->setVuNotifConfirm(true);
                     //Gestion du commentaire du propriétaire sur les clients
 
                     $commentClient = new CommentClient;

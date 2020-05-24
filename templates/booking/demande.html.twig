@@ -47,9 +47,12 @@
                                 {% if booking.confirm == 1  %}
                                         <li><a href="#" disable><i class="fas fa-check-circle"></i> Reservation Confirmée</a></li>
                                 {% else %}
+                                    {% if booking.confirm == -1 %}
+                                        <li><a href="#" disable><i class="fas fa-check-circle"></i>Le temps requis pour confirmer cette reservation a expiré</a></li>
+                                    {% else %}
                                     <li><a class="genric-btn info  circle" href="{{ path('demande_confirm' , {'id': booking.id}) }}"><i class="fas fa-check-circle"></i>Confirmer</a></li>
                                     <li><a class="genric-btn danger   circle" href="{{ path('demande_delete' , {'id': booking.id}) }}"><i class="fas fa-minus-circle"></i> Refuser </a></li>
-                                    
+                                    {% endif %}
                                 {% endif %}   
                                     
                                 </ul>
@@ -58,38 +61,40 @@
 
                     </div>
                 </div>
-                 <div class="alert alert-light" id="comment">
-                    <h2 class="alert-heading">Votre avis compte !</h2>
-                        {% if booking.confirm == 0 %}
-                        <p>Vous ne pouvez pas commenter </p>
-                           <p>Cette reservation est en attente de confirmation </p>
-                           <p>Apres 24h de la date de reservation cette demannde sera automatiquement <strong style="color:red">ANNULEE</strong> </p>
-                          
+                {% if booking.confirm != -1 %}
+                    <div class="alert alert-light" id="comment">
+                        <h2 class="alert-heading">Votre avis compte !</h2>
+                            {% if booking.confirm == 0 %}
+                            <p>Vous ne pouvez pas commenter </p>
+                            <p>Cette reservation est en attente de confirmation </p>
+                            <p>Apres 24h de la date de reservation cette demannde sera automatiquement <strong style="color:red">ANNULEE</strong> </p>
+                            
 
-                        {% else %}
-
-                            {% if booking.endDate < date() %}
-                                {% if booking.commentClient is  null %}
-                                {{ form_start(form) }}
-                                    {{ form_widget(form)}}
-                                    <button type="submit" class="btn genric-btn danger-border">Confirmer</button>
-                                    {{ form_end(form) }}
-                                {% else %}
-                                    <blockquote>{{ booking.commentClient.getContent() |raw }}</blockquote> 
-
-                                    <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating': booking.commentClient.rating} %}
-                                {% endif %}
                             {% else %}
-                                 <p>Vous pouvez pas commentez avant la fin de la location</p>
-                                 <p>Revenez apres le  {{booking.endDate | date('d/m/Y')}} pour donnez votre avis</p>
+
+                                {% if booking.endDate < date() %}
+                                    {% if booking.commentClient is  null %}
+                                    {{ form_start(form) }}
+                                        {{ form_widget(form)}}
+                                        <button type="submit" class="btn genric-btn danger-border">Confirmer</button>
+                                        {{ form_end(form) }}
+                                    {% else %}
+                                        <blockquote>{{ booking.commentClient.getContent() |raw }}</blockquote> 
+
+                                        <strong>Note :</strong> {% include 'partials/rating.html.twig' with {'rating': booking.commentClient.rating} %}
+                                    {% endif %}
+                                {% else %}
+                                    <p>Vous pouvez pas commentez avant la fin de la location</p>
+                                    <p>Revenez apres le  {{booking.endDate | date('d/m/Y')}} pour donnez votre avis</p>
+                                
+                                {% endif %}
+                                
+                                
                             
+                                        
                             {% endif %}
-                            
-                            
-                           
-                                    
-                        {% endif %}
-                </div>
+                    </div>
+                {% endif %}
     </div>
 
 {% endblock %}

@@ -42,7 +42,7 @@
                             </div>
 
                             <div class="blog_details">
-                                <a class="d-inline-block" href="{{ path('user_show', {'slug' : booking.booker.slug}) }}">
+                                <a class="d-inline-block" href="{{ path('user_show', {'id': booking.booker.id, 'slug' : booking.booker.slug}) }}">
                                     <h2>Reservation de: {{ booking.booker.getFullName() }}</h2>
                                 </a>
                                  {% if booking.endDate < date()  %}
