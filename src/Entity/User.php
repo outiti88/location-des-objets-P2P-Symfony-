@@ -89,6 +89,11 @@ class User implements UserInterface
      */
     private $commentClients;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Chat", mappedBy="Author")
+     */
+    private $chats;
+
 
 
     function getFullName()
@@ -116,6 +121,7 @@ class User implements UserInterface
         $this->bookings = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->commentClients = new ArrayCollection();
+        $this->chats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -391,6 +397,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($commentClient->getAuthor() === $this) {
                 $commentClient->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chat[]
+     */
+    public function getChats(): Collection
+    {
+        return $this->chats;
+    }
+
+    public function addChat(Chat $chat): self
+    {
+        if (!$this->chats->contains($chat)) {
+            $this->chats[] = $chat;
+            $chat->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChat(Chat $chat): self
+    {
+        if ($this->chats->contains($chat)) {
+            $this->chats->removeElement($chat);
+            // set the owning side to null (unless already changed)
+            if ($chat->getAuthor() === $this) {
+                $chat->setAuthor(null);
             }
         }
 

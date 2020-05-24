@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\CommentClient;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -88,6 +90,16 @@ class Booking
      * @ORM\Column(type="boolean")
      */
     private $vuNotifConfirm;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Chat", mappedBy="booking")
+     */
+    private $chats;
+
+    public function __construct()
+    {
+        $this->chats = new ArrayCollection();
+    }
 
 
     /**
@@ -324,6 +336,37 @@ class Booking
     public function setVuNotifConfirm(bool $vuNotifConfirm): self
     {
         $this->vuNotifConfirm = $vuNotifConfirm;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chat[]
+     */
+    public function getChats(): Collection
+    {
+        return $this->chats;
+    }
+
+    public function addChat(Chat $chat): self
+    {
+        if (!$this->chats->contains($chat)) {
+            $this->chats[] = $chat;
+            $chat->setBooking($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChat(Chat $chat): self
+    {
+        if ($this->chats->contains($chat)) {
+            $this->chats->removeElement($chat);
+            // set the owning side to null (unless already changed)
+            if ($chat->getBooking() === $this) {
+                $chat->setBooking(null);
+            }
+        }
 
         return $this;
     }
