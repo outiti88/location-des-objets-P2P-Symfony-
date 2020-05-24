@@ -1,86 +1,87 @@
 <header>
-        <div class="header-area ">
-            <div id="sticky-header" class="main-header-area">
-                <div class="container-fluid">
-                    <div class="header_bottom_border">
-                        <div class="row align-items-center">
-                            <div class="col-xl-3 col-lg-2">
-                                <div class="logo">
-                                    <a href="{{ path('homepage') }}" style="color:white;">
-                                       <i class="fas fa-cubes" style="font-size:1.5em; color:#D9230F;" ></i> LOCATION DES OBJETS
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-7">
-                                <div class="main-menu  d-none d-lg-block">
-                                    <nav>
-                                        <ul id="navigation">
-                                            <li><a class="active" href="{{ path('homepage') }}"><i class="fas fa-home" style="font-size:1em"></i> Acceuil</a></li>
-                                            <li><a href="#"><i class="far fa-newspaper" style="font-size:1em"></i> Annonces <i class="ti-angle-down"></i></a>
-                                                <ul class="submenu">
-                                                    <li><a href="{{ path('ads_index') }}"><i class="fas fa-eye" style="font-size:1em"></i> Voir Annonces</a></li>
-                                                    <li><a href="{{path('ads_create')}}"><i class="far fa-calendar-plus" style="font-size:1em"></i> Creer une annonce</a></li>
-                                                </ul>
-                                            </li>
-                                            {% if app.user %}
-                                               <li><a href="{{ path('account_bookings') }}"><i class="far fa-business-time" style="font-size:1em"></i>  Mes Reservations</a></li>
-                                                <li><a href="{{ path('account_demande') }}"><i class="fas fa-bullhorn" style="font-size:1em"></i> Les Demandes</a></li> 
-                                            {% endif %}
-                                            
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-3 d-none d-lg-block">
-                                <div class="main-menu  d-none d-lg-block text-right">
-                                    <ul>
-                                        {% if app.user %}
-                                        <li>
-                                            <a href="#">
-                                                <span class="badge badge-danger ml-2" id="counter"></span>
-                                                <i class="fas fa-bell"></i>
-                                                <i class="ti-angle-down"></i>
-                                            </a>
-                                            <ul class="submenu" id="notifPrepend">
-                                                <div class="dropdown-divider"></div>
-                                                <li><a class="dropdown-item" href="#">Voir tout</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#"> <img src="{{app.user.picture}}" alt="Avatar de {{ app.user.fullName }}" class="avatar avatar-mini">
-                                                {{ app.user.fullName }} <i class="ti-angle-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="{{path('ads_create')}}"><i class="far fa-calendar-plus" style="font-size:1em"></i>  Creer une annonce</a></li>
-                                                <li><a href="{{ path('account_index') }}"><i class="far fa-user" style="font-size:1em"></i>  Mon compte</a></li>
-                                                
-                                                <li><a href="{{ path('account_profile') }}">
-                                                        <i class="far fa-user-edit" style="font-size:1em"></i>  Modifier Mon profile
-                                                    </a></li>
-                                                <li><a href="{{ path('account_logout') }}" class="dropdown-item"><i class="far fa-sign-out-alt" style="font-size:1em"></i> Déconnexion</a></li>
-
-                                            </ul>
-                                        </li>
-                                        {% else %}
-                                        <li href="">
-                                            <a href="{{ path('account_register') }}"><i class="far fa-user-circle" style="font-size:1em"></i> Inscription</a>
-                                        </li>
-                                        <li href="">
-                                            <a href="{{ path('account_login') }}"><i class="far fa-sign-in-alt" style="font-size:1em"></i>   Connexion</a>
-                                        </li>
-                                        {% endif %}
-
-
-
-
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mobile_menu d-block d-lg-none"></div>
+    <div class="header-area ">
+        <div id="sticky-header" class="main-header-area">
+            <div class="container-fluid">
+                <div class="header_bottom_border">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3 col-lg-2">
+                            <div class="logo">
+                                <a href="{{ path('homepage') }}" style="color:white;">
+                                    <i class="fas fa-cubes" style="font-size:1.5em; color:#D9230F;"></i> LOCATION DES OBJETS
+                                </a>
                             </div>
                         </div>
-                    </div>
+                        <div class="col-xl-6 col-lg-7">
+                            <div class="main-menu  d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a class="active" href="{{ path('homepage') }}"><i class="fas fa-home" style="font-size:1em"></i> Acceuil</a></li>
+                                        <li><a href="#"><i class="far fa-newspaper" style="font-size:1em"></i> Annonces <i class="ti-angle-down"></i></a>
+                                            <ul class="submenu">
+                                                <li><a href="{{ path('ads_index') }}"><i class="fas fa-eye" style="font-size:1em"></i> Voir Annonces</a></li>
+                                                <li><a href="{{path('ads_create')}}"><i class="far fa-calendar-plus" style="font-size:1em"></i> Creer une annonce</a></li>
+                                            </ul>
+                                        </li>
+                                        {% if app.user %}
+                                        <li><a href="{{ path('account_bookings') }}"><i class="far fa-business-time" style="font-size:1em"></i> Mes Reservations</a></li>
+                                        <li><a href="{{ path('account_demande') }}"><i class="fas fa-bullhorn" style="font-size:1em"></i> Les Demandes</a></li>
+                                        {% endif %}
 
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 d-none d-lg-block">
+                            <div class="main-menu  d-none d-lg-block text-right">
+                                <ul>
+                                    {% if app.user %}
+                                    <li>
+                                        <a href="#">
+                                            <span class="badge badge-danger ml-2" id="counter"></span>
+                                            <i class="fas fa-bell"></i>
+                                            <i class="ti-angle-down"></i>
+                                        </a>
+                                        <ul class="submenu" id="notifPrepend" style="
+                                                    width :250px; max-height:350px; overflow: auto; ">
+                                            <div class="dropdown-divider"></div>
+                                            <li><a class="dropdown-item" href="#">Voir tout</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#"> <img src="{{app.user.picture}}" alt="Avatar de {{ app.user.fullName }}" class="avatar avatar-mini">
+                                            {{ app.user.fullName }} <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="{{path('ads_create')}}"><i class="far fa-calendar-plus" style="font-size:1em"></i> Creer une annonce</a></li>
+                                            <li><a href="{{ path('account_index') }}"><i class="far fa-user" style="font-size:1em"></i> Mon compte</a></li>
+
+                                            <li><a href="{{ path('account_profile') }}">
+                                                    <i class="far fa-user-edit" style="font-size:1em"></i> Modifier Mon profile
+                                                </a></li>
+                                            <li><a href="{{ path('account_logout') }}" class="dropdown-item"><i class="far fa-sign-out-alt" style="font-size:1em"></i> Déconnexion</a></li>
+
+                                        </ul>
+                                    </li>
+                                    {% else %}
+                                    <li href="">
+                                        <a href="{{ path('account_register') }}"><i class="far fa-user-circle" style="font-size:1em"></i> Inscription</a>
+                                    </li>
+                                    <li href="">
+                                        <a href="{{ path('account_login') }}"><i class="far fa-sign-in-alt" style="font-size:1em"></i> Connexion</a>
+                                    </li>
+                                    {% endif %}
+
+
+
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
-    </header>
+    </div>
+</header>

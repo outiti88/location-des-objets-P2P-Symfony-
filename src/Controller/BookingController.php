@@ -96,7 +96,8 @@ class BookingController extends AbstractController
         foreach ($bookings as $booking) {
             $bookingArray[] = [
                 'id' => $booking->getId(),
-                'booker' => $booking->getBooker()->getFullName()
+                'booker' => $booking->getBooker()->getFullName(),
+                'picture' => $booking->getBooker()->getPicture()
             ];
         }
         return $this->json($bookingArray, 200);
@@ -117,7 +118,8 @@ class BookingController extends AbstractController
         foreach ($bookings as $booking) {
             $bookingArray[] = [
                 'id' => $booking->getId(),
-                'title' => $booking->getAd()->getTitle()
+                'title' => $booking->getAd()->getTitle(),
+                'picture' => $booking->getAd()->getAuthor()->getPicture()
             ];
         }
         return $this->json($bookingArray, 200);
@@ -138,7 +140,8 @@ class BookingController extends AbstractController
         foreach ($bookings as $booking) {
             $bookingArray[] = [
                 'id' => $booking->getId(),
-                'title' => $booking->getAd()->getTitle()
+                'title' => $booking->getAd()->getTitle(),
+                'picture' => $booking->getBooker()->getPicture()
             ];
         }
         return $this->json($bookingArray, 200);
