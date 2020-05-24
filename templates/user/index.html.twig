@@ -68,7 +68,7 @@
     {% endif %}
 
 <div>
-    <h3 style="padding-top:20px">Les Commentaire : </h3>
+    <h3 style="padding-top:20px">Les Commentaires : </h3>
     {% set total = 0 %}
     {% set nbr = 0 %}
     {% for location in user.bookings %}
@@ -78,22 +78,21 @@
         <div class="comment-list" style="padding: 20px">
             <div class="single-comment justify-content-between d-flex">
                 <div class="user justify-content-between d-flex">
-                    <div class="thumb" style="padding-right:10px"> <a href="{{path('user_show', {'slug': comment.author.slug})}}">
+                    <div class="thumb" style="padding-right:10px"> <a href="{{path('user_show', {'id': comment.author.id, 'slug': comment.author.slug})}}">
                             <img class="avatar avatar-medium" src="{{comment.author.picture}}" alt="">
                         </a> </div>
                     <div class="desc">
                         <h5>
-                            <a href="{{path('user_show', {'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} : </a>
+                            <a href="{{path('user_show', {'id': comment.author.id, 'slug': comment.author.slug})}}">{{ comment.author.firstName }} {{ comment.author.lastName }} : </a>
                             <small><i>{{comment.createdAt | date()}}</i></small>
                         </h5>
-                        <small>Apres la location de l'objet : -> <a style="color:red" href="{{path('ads_show', {'slug' : location.ad.slug})}}">{{location.ad}}</a></small>
+                        <small>Apres la location de l'objet : -> <a style="color:red" href="{{path('ads_show', {'id' : location.ad.id, 'slug' : location.ad.slug})}}">{{location.ad}}</a></small>
                         <p class="comment"> {{ comment.content |raw }} </p>
                         <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center">
                                 <p class="date"><strong>la note de </strong>
                                     {% include 'partials/rating.html.twig' with {'rating': comment.rating } %}</p>
                             </div>
-
                         </div>
                     </div>
                 </div>

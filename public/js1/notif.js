@@ -7,7 +7,41 @@ function showNotif(Ids, counter) {
         .then(function (response) {
             $.each(response.data, function (key, value) {
                 if ($.inArray(value.id, Ids) === -1) {
-                    $('#notifPrepend').prepend("<li><a class='dropdown-item' href='http://127.0.0.1:8000/demande/" + value.id + "'><h6>Vous avez reçu une nouvelle demande de reservation de la part de " + value.booker + "</h6></a></li>");
+                    $('#notifPrepend').prepend("<li><a class='dropdown-item' href='/demande/" + value.id + "'><h6>Vous avez reçu une nouvelle demande de reservation de la part de " + value.booker + "</h6></a></li>");
+                    counter += 1;
+                    Ids.push(value.id);
+                    $('#counter').html(counter);
+                }
+
+            });
+        }).catch(function (error) {
+            console.log(error);
+        });
+    const urlBooker = "/booking/notifBooker";
+    axios.post(urlBooker, {
+            userId: userId
+        })
+        .then(function (response) {
+            $.each(response.data, function (key, value) {
+                if ($.inArray(value.id, Ids) === -1) {
+                    $('#notifPrepend').prepend("<li><a class='dropdown-item' href='/booking/" + value.id + "#comment'><h6>Votre reservation pour l'annonce <strong>" + value.title + "</strong> est terminée</h6></a></li>");
+                    counter += 1;
+                    Ids.push(value.id);
+                    $('#counter').html(counter);
+                }
+
+            });
+        }).catch(function (error) {
+            console.log(error);
+        });
+    const urlAuthor = "/booking/notifAuthor";
+    axios.post(urlAuthor, {
+            userId: userId
+        })
+        .then(function (response) {
+            $.each(response.data, function (key, value) {
+                if ($.inArray(value.id, Ids) === -1) {
+                    $('#notifPrepend').prepend("<li><a class='dropdown-item' href='/demande/" + value.id + "#comment'><h6>La reservation de <strong>" + value.booker + "</strong> pour votre article est terminée</h6></a></li>");
                     counter += 1;
                     Ids.push(value.id);
                     $('#counter').html(counter);
@@ -18,6 +52,7 @@ function showNotif(Ids, counter) {
             console.log(error);
         });
 }
+
 $(document).ready(function () {
     var counter = 0;
     var Ids = [];

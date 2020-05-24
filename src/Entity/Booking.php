@@ -74,6 +74,17 @@ class Booking
      */
     private $commentClient;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $vuNotifClient;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $vuNotifProp;
+
+
 
 
     /**
@@ -274,6 +285,30 @@ class Booking
         if ($commentClient->getBooking() !== $this) {
             $commentClient->setBooking($this);
         }
+
+        return $this;
+    }
+
+    public function getVuNotifClient(): ?bool
+    {
+        return $this->vuNotifClient;
+    }
+
+    public function setVuNotifClient(bool $vuNotifClient): self
+    {
+        $this->vuNotifClient = $vuNotifClient;
+
+        return $this;
+    }
+
+    public function getVuNotifProp(): ?bool
+    {
+        return $this->vuNotifProp;
+    }
+
+    public function setVuNotifProp(bool $vuNotifProp): self
+    {
+        $this->vuNotifProp = $vuNotifProp;
 
         return $this;
     }

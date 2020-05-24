@@ -39,7 +39,9 @@ class BookingController extends AbstractController
             $user = $this->getUser();
 
             $booking->setBooker($user)
-                ->setAd($ad);
+                ->setAd($ad)
+                ->setVuNotifClient(false)
+                ->setVuNotifProp(false);
 
             if (!$booking->isBookable()) {
                 $this->addFlash(
@@ -100,6 +102,48 @@ class BookingController extends AbstractController
     }
 
     /**
+     * Permet de communiquer les reservations términées et prêtes pour commenter au booker
+     *
+     * @Route("/booking/notifBooker", name="booking_notifBooker")
+     * @return json
+     */
+    public function showNotifBooker(Request $request, BookingRepository $bookingRepository, UserRepository $userRepository)
+    {
+        $postData = json_decode($request->getContent());
+        $userId = $postData->userId;
+        $user = $userRepository->findOneById($userId);
+        $bookings = $bookingRepository->getNotifBooker($user);
+        foreach ($bookings as $booking) {
+            $bookingArray[] = [
+                'id' => $booking->getId(),
+                'title' => $booking->getAd()->getTitle()
+            ];
+        }
+        return $this->json($bookingArray, 200);
+    }
+
+    /**
+     * Permet de communiquer les reservations términées et prêtes pour commenter a l'auteur
+     *
+     * @Route("/booking/notifAuthor", name="booking_notifAuthor")
+     * @return json
+     */
+    public function showNotifAuthor(Request $request, BookingRepository $bookingRepository, UserRepository $userRepository)
+    {
+        $postData = json_decode($request->getContent());
+        $userId = $postData->userId;
+        $user = $userRepository->findOneById($userId);
+        $bookings = $bookingRepository->getNotifAuthor($user);
+        foreach ($bookings as $booking) {
+            $bookingArray[] = [
+                'id' => $booking->getId(),
+                'booker' => $booking->getBooker()->getFullName()
+            ];
+        }
+        return $this->json($bookingArray, 200);
+    }
+
+    /**
      * Permet d'afficher la page d'une reservation
      *
      * @Route("/booking/{id}", name="booking_show")
@@ -121,6 +165,8 @@ class BookingController extends AbstractController
                     ->setAuthor($this->getUser());
 
                 $manager->persist($comment);
+                $booking->setVuNotifClient(true);
+                $manager->persist($booking);
                 $manager->flush();
 
                 $this->addFlash(
@@ -141,7 +187,7 @@ class BookingController extends AbstractController
 
 
     /**
-     * Permet de confirmer une demande dereservation
+     * Permet de confirmer une demande de reservation
      * 
      * @Route("/demande/{id}/confirm", name="demande_confirm")
      * 
@@ -186,6 +232,8 @@ class BookingController extends AbstractController
                     ->setCreatedAt(new \DateTime());
 
                 $manager->persist($commentClient);
+                $booking->setVuNotifProp(true);
+                $manager->persist($booking);
                 $manager->flush();
 
                 $this->addFlash(

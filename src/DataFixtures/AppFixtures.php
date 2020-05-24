@@ -207,37 +207,41 @@ class AppFixtures extends Fixture
                     ->setCreatedAt($createdAtBooking)
                     ->setComment($comment)
                     ->setAmount($amount)
+                    ->setVuNotifProp(false)
+                    ->setVuNotifClient(false)
                     ->setConfirm(mt_rand(-1, 1));
 
-                $manager->persist($booking);
 
-                if ($booking->getEndDate() < new \DateTime()) {
+
+                if ($booking->getEndDate() < new \DateTime() && $booking->getConfirm() == 1) {
+                    $booking->setVuNotifProp(true)
+                        ->setVuNotifClient(true);
                     //Gestion du commentaire du propriétaire sur les clients
-                    if ($booking->getConfirm()) {
-                        $commentClient = new CommentClient;
-                        $commentClient->setRating(mt_rand(1, 5))
-                            ->setPositiveComment($faker->paragraph())
-                            ->setNegativeComment($faker->paragraph())
-                            ->setCreatedAt($endDateBooking)
-                            ->setBooking($booking)
-                            ->setAuthor($ad->getAuthor());
-                        $manager->persist($commentClient);
-                    }
+
+                    $commentClient = new CommentClient;
+                    $commentClient->setRating(mt_rand(1, 5))
+                        ->setPositiveComment($faker->paragraph())
+                        ->setNegativeComment($faker->paragraph())
+                        ->setCreatedAt($endDateBooking)
+                        ->setBooking($booking)
+                        ->setAuthor($ad->getAuthor());
+                    $manager->persist($commentClient);
+
 
                     //Gestion des commentaires des clients sur l'annonce et le proprietaire
-                    if ($booking->getConfirm()) {
-                        $comment = new Comment;
-                        $comment->setPositiveComment($faker->paragraph())
-                            ->setNegativeComment($faker->paragraph())
-                            ->setProNegative($faker->paragraph())
-                            ->setProPositive($faker->paragraph())
-                            ->setRating(mt_rand(1, 5))
-                            ->setAuthor($booker)
-                            ->setAd($ad);
 
-                        $manager->persist($comment);
-                    }
+                    $comment = new Comment;
+                    $comment->setPositiveComment($faker->paragraph())
+                        ->setNegativeComment($faker->paragraph())
+                        ->setProNegative($faker->paragraph())
+                        ->setProPositive($faker->paragraph())
+                        ->setRating(mt_rand(1, 5))
+                        ->setAuthor($booker)
+                        ->setAd($ad);
+
+                    $manager->persist($comment);
                 }
+                $manager->persist($booking);
             }
 
             $manager->persist($ad);
