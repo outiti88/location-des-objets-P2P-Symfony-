@@ -649,7 +649,7 @@
 		</div>
 		<div class="message-input">
 			<div class="wrap">
-      {% if booking.endDate > date()  %}
+      {% if booking.endDate > date() and booking.confirm == 1 %}
         <input type="text" id="message" placeholder="Ecrivez votre message..." />
         <button class="submit" id="Envoyer"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
       {% endif %}

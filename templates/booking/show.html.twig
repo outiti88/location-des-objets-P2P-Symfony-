@@ -71,7 +71,7 @@
                         <div class="col">
                             <h4>
                                 <a href="{{ path('user_show', {'id': author.id, 'slug' : author.slug}) }}">{{ author.fullName }}</a>
-                                {% if booking.endDate > date()  %}
+                                {% if booking.endDate > date() and booking.confirm == 1 %}
                                     <a class="genric-btn info  circle" href="/chat/{{ booking.id }}"><i class="fas fa-check-circle"></i>Discuter</a>
                                 {% endif %}
                             </h4>

@@ -46,7 +46,7 @@
                                     <h2>Reservation de: {{ booking.booker.getFullName() }}</h2>
                                 </a>
                                 <br>
-                                {% if booking.endDate > date()  %}
+                                {% if booking.endDate > date() and booking.confirm == 1 %}
                                     <a class="genric-btn info  circle" href="/chat/{{ booking.id }}"><i class="fas fa-check-circle"></i>Discuter</a>
                                 {% endif %}
                                  {% if booking.endDate < date()  %}
