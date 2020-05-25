@@ -38,6 +38,18 @@ class Chat
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $seen;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $sendTo;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +99,30 @@ class Chat
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getSeen(): ?bool
+    {
+        return $this->seen;
+    }
+
+    public function setSeen(bool $seen): self
+    {
+        $this->seen = $seen;
+
+        return $this;
+    }
+
+    public function getSendTo(): ?User
+    {
+        return $this->sendTo;
+    }
+
+    public function setSendTo(?User $sendTo): self
+    {
+        $this->sendTo = $sendTo;
 
         return $this;
     }

@@ -19,6 +19,36 @@ class ChatRepository extends ServiceEntityRepository
         parent::__construct($registry, Chat::class);
     }
 
+    public function getMessages($booking, $booker, $author)
+    {
+        $query = $this
+            ->createQueryBuilder('c')
+            ->andWhere('c.booking = :booking')
+            ->setParameter('booking', $booking)
+            ->andWhere('c.Author = :booker OR c.Author = :author')
+            ->setParameter('booker', $booker)
+            ->setParameter('author', $author)
+            ->orderBy('c.createdAt')
+            ->getQuery()
+            ->getResult();
+        return $query;
+    }
+
+
+    public function getNotif($user)
+    {
+        $query = $this
+            ->createQueryBuilder('c')
+            ->andWhere('c.seen = :seen')
+            ->setParameter('seen', false)
+            ->andWhere('c.sendTo = :sendTo')
+            ->setParameter('sendTo', $user)
+            ->orderBy('c.createdAt')
+            ->getQuery()
+            ->getResult();
+        return $query;
+    }
+
     // /**
     //  * @return Chat[] Returns an array of Chat objects
     //  */

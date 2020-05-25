@@ -1,11 +1,11 @@
-function showNotif(Ids, counter) {
+function showNotif(Ids, counter, chatIds, counterMessage) {
     const url = "/booking/notif";
     const userId = $('#userId').val();
     axios.post(url, {
             userId: userId
         })
-        .then(function(response) {
-            $.each(response.data, function(key, value) {
+        .then(function (response) {
+            $.each(response.data, function (key, value) {
                 if ($.inArray(value.id, Ids) === -1) {
 
                     $('#notifPrepend').prepend(
@@ -18,15 +18,15 @@ function showNotif(Ids, counter) {
                 }
 
             });
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log(error);
         });
     const urlBooker = "/booking/notifBooker";
     axios.post(urlBooker, {
             userId: userId
         })
-        .then(function(response) {
-            $.each(response.data, function(key, value) {
+        .then(function (response) {
+            $.each(response.data, function (key, value) {
                 if ($.inArray(value.id, Ids) === -1) {
                     $('#notifPrepend').prepend(
                         "<li style='display:flex'><img src='" + value.picture + "' class='avatar avatar-mini'>" +
@@ -38,15 +38,15 @@ function showNotif(Ids, counter) {
                 }
 
             });
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log(error);
         });
     const urlAuthor = "/booking/notifAuthor";
     axios.post(urlAuthor, {
             userId: userId
         })
-        .then(function(response) {
-            $.each(response.data, function(key, value) {
+        .then(function (response) {
+            $.each(response.data, function (key, value) {
                 if ($.inArray(value.id, Ids) === -1) {
                     $('#notifPrepend').prepend(
                         "<li style='display:flex'> <img src='" + value.picture + "' class='avatar avatar-mini'>" +
@@ -58,7 +58,7 @@ function showNotif(Ids, counter) {
                 }
 
             });
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.log(error);
         });
 
@@ -66,8 +66,8 @@ function showNotif(Ids, counter) {
     axios.post(urlConfirm, {
             userId: userId
         })
-        .then(function(response) {
-            $.each(response.data, function(key, value) {
+        .then(function (response) {
+            $.each(response.data, function (key, value) {
                 if ($.inArray(value.id, Ids) === -1) {
                     $('#notifPrepend').prepend("<li><a class='dropdown-item' href='/booking/confirm/" + value.id + "'><h6 style='font-size:0.75em'><i h6 style='font-size:2em; color:green' class='fas fa-clipboard-check'></i> Votre reservation pour l'article <strong style='color:green'>" + value.title + "</strong> a été confirmée</h6></a></li>");
                     counter += 1;
@@ -76,16 +76,35 @@ function showNotif(Ids, counter) {
                 }
 
             });
-        }).catch(function(error) {
+        }).catch(function (error) {
+            console.log(error);
+        });
+    const urlChat = "/chat/notif";
+    axios.post(urlChat, {
+            userId: userId
+        })
+        .then(function (response) {
+            $.each(response.data, function (key, value) {
+                if ($.inArray(value.id, chatIds) === -1) {
+                    $('#messagePrepend').prepend("<li><a class='dropdown-item' href='/chat/seen/" + value.id + "'><h6 style='font-size:0.75em'><i h6 style='font-size:2em; color:green' class='fas fa-clipboard-check'></i> Vous avez des messages concernant la reservation n°<strong style='color:green'>" + value.id + "</strong></h6></a></li>");
+                    counterMessage += 1;
+                    chatIds.push(value.id);
+                    $('#counterMessage').html(counterMessage);
+                }
+
+            });
+        }).catch(function (error) {
             console.log(error);
         });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     var counter = 0;
+    var counterMessage = 0;
     var Ids = [];
-    showNotif(Ids, counter);
-    setInterval(function() {
-        showNotif(Ids, counter);
+    var chatIds = [];
+    showNotif(Ids, counter, chatIds, counterMessage);
+    setInterval(function () {
+        showNotif(Ids, counter, chatIds);
     }, 5000);
 });

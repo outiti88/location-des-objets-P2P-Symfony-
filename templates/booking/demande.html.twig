@@ -42,7 +42,7 @@
                                     <h2>Reservation de: {{ booking.booker.getFullName() }}</h2>
                                 </a>
                                 <br>
-                                <a class="genric-btn info  circle" href="#"><i class="fas fa-check-circle"></i>Discuter</a>
+                                <a class="genric-btn info  circle" href="/chat/{{ booking.id }}"><i class="fas fa-check-circle"></i>Discuter</a>
                                 <p>Réservation <strong>n°{{ booking.id }}</strong><br>
                                     Du {{ booking.startDate | date('d/m/Y') }} au {{ booking.endDate | date('d/m/Y') }} ({{ booking.amount }}Dhs)</p>
                                 <ul class="blog-info-link">

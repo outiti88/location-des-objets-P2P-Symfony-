@@ -439,6 +439,7 @@
 }
 #frame .content .contact-profile p {
   float: left;
+  margin-top: 15px;
 }
 #frame .content .contact-profile .social-media {
   float: right;
@@ -597,7 +598,7 @@
             </div>
         </div>
     </div>
-<h3 style="padding:20px; text-align:center" >Vous pouvez parlez ici a propos de la location de l'objet : <strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </strong> </h3>
+<h3 style="padding:20px; text-align:center" >Vous pouvez parlez ici a propos de la location de l'objet : <strong>{{ booking.ad.title }} </strong> </h3>
 
 <div id="frame">
 	<div id="sidepanel">
@@ -613,62 +614,36 @@
 	
 		<div id="contacts">
 			<ul>
-			<li class="contact active">
+			  <li class="contact active">
 					<div class="wrap">
-						<span class="contact-status busy"></span>
-						<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+						<img src="" alt="" />
 						<div class="meta">
-							<p class="name">Harvey Specter</p>
-							<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+							<p id="name"></p>
 						</div>
 					</div>
 				</li>
-        {% for ads in app.user.ads %}
-	        {% for booking in ads.bookings %}
-                {% if booking.confirm == 1 %}
-                    <li class="contact">
-					<div class="wrap">
-						<span class="contact-status away"></span>
-						<img src="{{booking.booker.picture}}" alt="" />
-						<div class="meta">
-							<p class="name">{{booking.booker.getFullName()}}</p>
-							<p class="preview">Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-						</div>
-					</div>
-				</li>
-                {% endif %}
-				
-	        {% endfor %}
-             {% endfor %}
 			</ul>
 		</div>
 
 	</div>
 	<div class="content">
 		<div class="contact-profile">
-			<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-			<p>Harvey Specter</p>
-
 		</div>
 		<div class="messages">
 			<ul>
-				<li class="sent">
-					<img src="{{app.user.picture}}" alt="" />
-					<p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-				</li>
-				<li class="replies">
-					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-					<p>When you're backed against the wall, break the god damn thing down.</p>
-				</li>
-
 			</ul>
 		</div>
 		<div class="message-input">
 			<div class="wrap">
-			<input type="text" placeholder="Write your message..." />
-			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+			<input type="text" id="message" placeholder="Ecrivez votre message..." />
+			<button class="submit" id="Envoyer"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
 			</div>
 		</div>
 	</div>
 </div>
+<input type="hidden" id="bookingId" value="{{ booking.id }}">
+{% endblock %}
+
+{% block javascripts %}
+<script src="/js1/chat.js"></script>
 {% endblock %}
