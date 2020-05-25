@@ -106,5 +106,5 @@ $(document).ready(function () {
     showNotif(Ids, counter, chatIds, counterMessage);
     setInterval(function () {
         showNotif(Ids, counter, chatIds);
-    }, 5000);
+    }, 7000);
 });

@@ -42,7 +42,9 @@
                                     <h2>Reservation de: {{ booking.booker.getFullName() }}</h2>
                                 </a>
                                 <br>
-                                <a class="genric-btn info  circle" href="/chat/{{ booking.id }}"><i class="fas fa-check-circle"></i>Discuter</a>
+                                {% if booking.endDate > date()  %}
+                                    <a class="genric-btn info  circle" href="/chat/{{ booking.id }}"><i class="fas fa-check-circle"></i>Discuter</a>
+                                {% endif %}
                                 <p>Réservation <strong>n°{{ booking.id }}</strong><br>
                                     Du {{ booking.startDate | date('d/m/Y') }} au {{ booking.endDate | date('d/m/Y') }} ({{ booking.amount }}Dhs)</p>
                                 <ul class="blog-info-link">

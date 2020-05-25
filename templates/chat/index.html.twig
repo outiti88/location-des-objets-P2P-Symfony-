@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title %}Hello ChatController!{% endblock %}
+{% block title %}Discussion{% endblock %}
 
  {% block stylesheets %}
  
@@ -592,7 +592,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text text-center">
-                        <h3>Espace de chat</h3>
+                        <h3>Espace de Discussion</h3>
                     </div>
                 </div>
             </div>
@@ -616,10 +616,17 @@
 			<ul>
 			  <li class="contact active">
 					<div class="wrap">
-						<img src="" alt="" />
-						<div class="meta">
-							<p id="name"></p>
-						</div>
+          {% if app.user == booking.ad.author %}
+              <img src="{{ booking.booker.picture }}" alt="" />
+              <div class="meta">
+                <p id="name">{{ booking.booker.fullName }}</p>
+              </div>
+            {% else %}
+              <img src="{{ booking.ad.author.picture }}" alt="" />
+              <div class="meta">
+                <p id="name">{{ booking.ad.author.fullName }}</p>
+              </div>
+            {% endif %}
 					</div>
 				</li>
 			</ul>
@@ -628,6 +635,13 @@
 	</div>
 	<div class="content">
 		<div class="contact-profile">
+      {% if app.user == booking.ad.author %}
+        <img src="{{ booking.booker.picture }}" alt='' />
+        <p>{{ booking.booker.fullName }}</p>
+      {% else %}
+        <img src="{{ booking.ad.author.picture }}" alt='' />
+        <p>{{ booking.ad.author.fullName }}</p>
+      {% endif %}
 		</div>
 		<div class="messages">
 			<ul>
@@ -635,8 +649,10 @@
 		</div>
 		<div class="message-input">
 			<div class="wrap">
-			<input type="text" id="message" placeholder="Ecrivez votre message..." />
-			<button class="submit" id="Envoyer"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+      {% if booking.endDate > date()  %}
+        <input type="text" id="message" placeholder="Ecrivez votre message..." />
+        <button class="submit" id="Envoyer"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+      {% endif %}
 			</div>
 		</div>
 	</div>

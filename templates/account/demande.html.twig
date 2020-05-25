@@ -46,12 +46,14 @@
                                     <h2>Reservation de: {{ booking.booker.getFullName() }}</h2>
                                 </a>
                                 <br>
-                                <a class="genric-btn info  circle" href="#"><i class="fas fa-check-circle"></i>Discuter</a>
+                                {% if booking.endDate > date()  %}
+                                    <a class="genric-btn info  circle" href="/chat/{{ booking.id }}"><i class="fas fa-check-circle"></i>Discuter</a>
+                                {% endif %}
                                  {% if booking.endDate < date()  %}
                                     
                                         <h4 style="color: red;">Location terminée le {{ booking.endDate | date('d/m/Y') }} :o </h4>
                                         {% if booking.commentClient is  null %}
-                                         <p>Vous pouvez <a href="{{ path('demande_show' , {'id': booking.id}) }}">commenter et donner votre avis</a> sur le client <a href="{{ path('user_show', {'slug' : booking.booker.slug}) }}">{{booking.booker}} </a> </p> 
+                                         <p>Vous pouvez <a href="{{ path('demande_show' , {'id': booking.id}) }}">commenter et donner votre avis</a> sur le client <a href="{{ path('user_show', {'id': booking.booker.id, 'slug' : booking.booker.slug}) }}">{{booking.booker}} </a> </p> 
                                         {% else %}
                                         <h2>Commentaire: </h2>
                                          <blockquote>{{ booking.commentClient.getContent() |raw }}</blockquote> 

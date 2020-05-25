@@ -64,28 +64,28 @@ class Comment
      */
     private $proNegative;
     public function getContent(): ?string
-    {   
-        if(!$this->positiveComment && !$this->negativeComment)
-        return "<b>Pas de commentaire</b>";
-        if($this->positiveComment && $this->negativeComment)
-        return "<b>Positive:</b> ".$this->positiveComment."
+    {
+        if (!$this->positiveComment && !$this->negativeComment)
+            return "<b>Pas de commentaire</b>";
+        if ($this->positiveComment && $this->negativeComment)
+            return "<b>Positive:</b> " . $this->positiveComment . "
         </br>
-        <b>negative:</b> ".$this->negativeComment ;
-        else 
-        return $this->negativeComment?"<p> <b>negative:</b> ".$this->negativeComment."</p>":"<p> <b>Positive:</b>  ".$this->positiveComment."</p>";
+        <b>negative:</b> " . $this->negativeComment;
+        else
+            return $this->negativeComment ? "<p> <b>negative:</b> " . $this->negativeComment . "</p>" : "<p> <b>Positive:</b>  " . $this->positiveComment . "</p>";
     }
     public function getProContent(): ?string
-    {   
-        if(!$this->proPositive && !$this->proNegative)
-        return "<b>Pas de commentaire</b>";
-        if($this->proPositive && $this->proNegative)
-        return "<b>Positive:</b> ".$this->proPositive."
+    {
+        if (!$this->proPositive && !$this->proNegative)
+            return "<b>Pas de commentaire</b>";
+        if ($this->proPositive && $this->proNegative)
+            return "<b>Positive:</b> " . $this->proPositive . "
         </br>
-        <b>negative:</b> ".$this->proNegative ;
-        else 
-        return $this->proNegative?"<p> <b>negative:</b> ".$this->proNegative."</p>":"<p> <b>Positive:</b>  ".$this->proPositive."</p>";
+        <b>negative:</b> " . $this->proNegative;
+        else
+            return $this->proNegative ? "<p> <b>negative:</b> " . $this->proNegative . "</p>" : "<p> <b>Positive:</b>  " . $this->proPositive . "</p>";
     }
-    
+
 
 
     /**
@@ -161,7 +161,7 @@ class Comment
         return $this->positiveComment;
     }
 
-    
+
 
     public function setPositiveComment(?string $positiveComment): self
     {
@@ -192,7 +192,8 @@ class Comment
         }
     }
 
-    public function __toString(){
+    public function __toString()
+    {
         return $this->getContent();
     }
 

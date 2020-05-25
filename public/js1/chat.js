@@ -22,36 +22,6 @@ function insertMessage(MessageIds) {
         });
 };
 
-function selectMessagesFirst(MessageIds, bol) {
-    const url = "/chat/selectMessages";
-    const bookingId = $('#bookingId').val();
-    const userId = $('#userId').val();
-    axios.post(url, {
-            bookingId: bookingId,
-            userId: userId
-        })
-        .then(function (response) {
-            $.each(response.data, function (key, value) {
-                if ($.inArray(value.id, MessageIds) === -1) {
-                    if (value.authorId == userId) {
-                        $('.messages ul').append("<li class='sent'><img src='" + value.authorPicture + "' alt='' /><p>" + value.message + "</p></li>");
-                    } else {
-                        $('.messages ul').append("<li class='replies'><img src='" + value.authorPicture + "' alt='' /><p>" + value.message + "</p></li>");
-                    }
-                    if (bol) {
-                        $('.contact-profile').append("<img src='" + value.chatterPicture + "' alt='' /><p>" + value.chatterFullName + "</p>");
-                        $('.contact.active .wrap img').attr('src', value.chatterPicture);
-                        $('#name').append(value.chatterFullName);
-                        bol = false;
-                    }
-                    MessageIds.push(value.id);
-                }
-            });
-        }).catch(function (error) {
-            console.log(error);
-        });
-}
-
 function selectMessages(MessageIds) {
     const url = "/chat/selectMessages";
     const bookingId = $('#bookingId').val();
@@ -78,7 +48,6 @@ function selectMessages(MessageIds) {
 
 $(document).ready(function () {
     var MessageIds = [];
-    var bol = true;
     $('#message').click(function () {
         const url = "/chat/setSeen";
         const bookingId = $('#bookingId').val();
@@ -99,12 +68,12 @@ $(document).ready(function () {
             $(this).val("");
         }
     });
-    selectMessagesFirst(MessageIds, bol);
+    selectMessages(MessageIds);
     var mydiv = $('.messages');
     mydiv.scrollTop(mydiv.prop("scrollHeight"));
     setInterval(function () {
         selectMessages(MessageIds);
         var mydiv = $('.messages');
         mydiv.scrollTop(mydiv.prop("scrollHeight"));
-    }, 5000);
+    }, 2000);
 });
