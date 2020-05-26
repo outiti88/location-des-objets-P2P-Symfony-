@@ -3,13 +3,21 @@
 {% block title %}Vous n'avez pas le droit d'acceder a cette ressource{% endblock %}
 
 {% block body %}
-
-    <div class="container">
-        <h1>Alors ? vous essayez de bousiller le site ?!</h1>
-        <div class="alert alert-danger">
+    <div class="bradcam_area breadcam_bg_2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Oups! ERREUR 403</h3>
+                                <h3>Alors ? vous essayez de bousiller le site ?!</h3>
         <p>Vous n'avez pas le droit d'acceder a cette ressource !</p>
+        <a class="genric-btn danger e-large" href="{{ path('homepage') }}" class="btn btn-primary">Retour à l'accueil</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <a href="{{ path('homepage') }}" class="btn btn-primary">Retour à l'accueil</a>
     </div>
+   
+    
 
 {% endblock %}
