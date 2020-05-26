@@ -3,13 +3,23 @@
 {% block title %}Page non trouvée{% endblock %}
 
 {% block body %}
-
+        <div class="bradcam_area breadcam_bg_2">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text text-center">
+                        <h3>Oups! ERREUR 404</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <h1>Oups ! la page que vous recherchez n'existe pas</h1>
         <p>On a surement du mal vous renseigner ! Aucun soucis,
         vous pouvez retourner a l'accueil ou voir nos dernieres annonces !</p>
-        <a href="{{ path('homepage') }}" class="btn btn-primary">Retour à l'accueil</a>
-        <a href="{{ path('ads_index') }}" class="btn btn-primary">Nos annonces</a>
+        <a class="genric-btn danger e-large" href="{{ path('homepage') }}" class="btn btn-primary">Retour à l'accueil</a>
+        <a class="genric-btn primary e-large" href="{{ path('ads_index') }}" class="btn btn-primary">Nos annonces</a>
     </div>
 
 {% endblock %}
