@@ -133,6 +133,21 @@
     "ocramius/proxy-manager": {
         "version": "2.1.1"
     },
+    "onurb/doctrine-metadata-grapher": {
+        "version": "1.1.11"
+    },
+    "onurb/doctrine-yuml-bundle": {
+        "version": "1.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.1",
+            "ref": "81130d6607195660087a01442f30be1edad71804"
+        },
+        "files": [
+            "./config/routes/dev/yuml.yaml"
+        ]
+    },
     "pagerfanta/pagerfanta": {
         "version": "v2.1.3"
     },

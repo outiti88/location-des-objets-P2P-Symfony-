@@ -14,7 +14,7 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
     admin:
-      pattern: ^/admin
+      pattern: ^/front
       anonymous: true
       provider: app_user_provider
       form_login:
@@ -44,6 +44,6 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/front/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/front, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
