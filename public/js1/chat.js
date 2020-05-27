@@ -75,5 +75,5 @@ $(document).ready(function () {
         selectMessages(MessageIds);
         var mydiv = $('.messages');
         mydiv.scrollTop(mydiv.prop("scrollHeight"));
-    }, 2000);
+    }, 1000);
 });
